@@ -8,7 +8,7 @@ namespace Code.Scrips
         public InputEventSO clickEvent;
         public DragEventSO dragEvent;
 
-        private bool _isDragging = false;
+        private bool _isDragging;
         private GameObject _draggedObject;
 
         void Update()
@@ -16,7 +16,7 @@ namespace Code.Scrips
             if (Input.GetMouseButtonDown(0)) // Left click
             {
                 Vector3 mousePosition = Input.mousePosition;
-                //clickEvent.Raise(mousePosition);
+                
 
                 Ray ray = Camera.main.ScreenPointToRay(mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
@@ -28,6 +28,12 @@ namespace Code.Scrips
                         dragEvent.StartDrag(_draggedObject);
                     }
                 }
+            }
+
+            if (Input.GetMouseButtonDown(1)) // Right CLick
+            {
+                Vector3 mousePosition = Input.mousePosition;
+                clickEvent.Raise(mousePosition);
             }
 
             if (_isDragging)

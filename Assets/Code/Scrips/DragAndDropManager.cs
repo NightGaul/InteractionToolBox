@@ -35,7 +35,7 @@ namespace Code.Scrips
         private void HandleDragStart(GameObject obj)
         {
             _originPosition = obj.transform.position;
-            Debug.Log("Started dragging: " + obj.name + " | Origin: " + _originPosition);
+           
         }
 
         private void HandleDragUpdate(GameObject obj, Vector3 position)
@@ -53,7 +53,6 @@ namespace Code.Scrips
             if (nearestPoint != null && (Vector3.Distance(nearestPoint.position, obj.transform.position) < snapRadius))
             {
                 obj.transform.position = nearestPoint.position;
-                Debug.Log("Snapped to: " + nearestPoint.name);
             }
             else
             {
