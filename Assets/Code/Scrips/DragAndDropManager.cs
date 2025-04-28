@@ -1,5 +1,6 @@
 using System.Linq;
 using Code.ScriptableObjects;
+using Code.ScriptableObjectScripts;
 using UnityEngine;
 
 namespace Code.Scrips

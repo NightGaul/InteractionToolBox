@@ -5,7 +5,7 @@ namespace Code.Scrips
 {
     public class ClickManager : MonoBehaviour
     {
-        public InputEventSO clickEvent;
+        public RightClickEventSO clickEvent;
 
         void OnEnable()
         {
