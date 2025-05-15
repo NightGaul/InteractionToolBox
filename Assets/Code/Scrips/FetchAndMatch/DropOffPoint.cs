@@ -1,21 +1,22 @@
 using Code.Scrips.Abstractions;
 using Code.Scrips.VisualHelpers;
+using Code.ScriptableObjectScripts;
 using UnityEngine;
 
 namespace Code.Scrips.FetchAndMatch
 {
     [RequireComponent(typeof(Collider))]
-    public class DropOffPoint: AbstractInteraction
+    public class DropOffPoint : AbstractInteraction
     {
         private Collider _collider;
         public FetchAndMatchManager manager;
-        public bool isGoal;
+        public GoalSO goal; // REPLACE isGoal with this
 
         private void Start()
         {
             _collider = GetComponent<Collider>();
             _collider.isTrigger = true;
-            
+
             var outline = gameObject.AddComponent<Outline>();
             outline.OutlineColor = manager.outlineColor;
             outline.OutlineWidth = manager.outlineWidth;
@@ -32,14 +33,14 @@ namespace Code.Scrips.FetchAndMatch
 
         private void OnTriggerEnter(Collider other)
         {
-            if(other.CompareTag("Interactable"))
+            if (other.CompareTag("Interactable"))
             {
-                if (manager.CheckForGoal(isGoal))
+                var goalContainer = other.GetComponent<MatchableObject>();
+                if (goalContainer != null && manager.CheckForGoal(goalContainer.goal, goal))
                 {
                     manager.SetIsOnGoal(true);
                     manager.SetPossibleSnapObject(transform);
                 }
-               
             }
         }
 
@@ -48,7 +49,5 @@ namespace Code.Scrips.FetchAndMatch
             manager.SetIsOnGoal(false);
             manager.SetPossibleSnapObject(null);
         }
-        
-        
     }
 }

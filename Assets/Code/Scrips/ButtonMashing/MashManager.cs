@@ -16,7 +16,6 @@ namespace Code.Scrips.ButtonMashing
         private AudioSource _audioSourceFinish;
 
         private bool _alreadyWon;
-        //TODO: Get a slider or smth, its a bit annoying to get this to the right value
 
         [Range(0f,1f)]
         public float mashEffectIntensityStart;

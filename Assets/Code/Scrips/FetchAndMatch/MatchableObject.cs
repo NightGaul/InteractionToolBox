@@ -6,6 +6,6 @@ namespace Code.Scrips.FetchAndMatch
 
     public class MatchableObject : MonoBehaviour
     {
-        public MatchGoalSO goal;
+        public GoalSO goal;
     }
 }

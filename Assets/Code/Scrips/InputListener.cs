@@ -1,26 +1,24 @@
-using System;
 using Code.ScriptableObjects;
 using Code.ScriptableObjectScripts;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Code.Scrips
 {
     public class InputListener : MonoBehaviour
     {
+        [Header("Events")]
         public RightClickEventSO clickEvent;
         public DragEventSO dragEvent;
         public InteractEventSO interactEvent;
         public ScrollEventSO scrollEvent;
-
+        
+        [FormerlySerializedAs("settings")] [Header("InputSettings")]
+        public InputSettingsSo settingsSo;
         private bool _isDragging;
         private GameObject _draggedObject;
         private Camera _camera;
-
-        //TO DO:
-        //Dynamic Input, save with scriptable Object
-
-
+        
         private void Start()
         {
             _camera = Camera.main;
@@ -28,8 +26,14 @@ namespace Code.Scrips
 
         void Update()
         {
-            // Left click
-            if (Input.GetMouseButtonDown(0))
+            // Paint CLick
+            if (Input.GetKeyDown(settingsSo.paintInput))
+            {
+                Vector3 mousePosition = Input.mousePosition;
+                clickEvent.Raise(mousePosition);
+            }
+            
+            if (Input.GetKeyDown(settingsSo.selectInput))
             {
                 Vector3 mousePosition = Input.mousePosition;
 
@@ -46,12 +50,6 @@ namespace Code.Scrips
                 }
             }
 
-            // Right CLick
-            if (Input.GetMouseButton(1))
-            {
-                Vector3 mousePosition = Input.mousePosition;
-                clickEvent.Raise(mousePosition);
-            }
 
             if (_isDragging)
             {
@@ -60,7 +58,7 @@ namespace Code.Scrips
             }
 
             // Release click
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetKeyDown(settingsSo.selectInput))
             {
                 if (_isDragging)
                 {
@@ -71,7 +69,7 @@ namespace Code.Scrips
             }
 
             // Interact Key
-            if (Input.GetKeyUp(KeyCode.E))
+            if (Input.GetKeyUp(settingsSo.interactInput))
             {
                 if (_camera != null)
                 {
@@ -89,8 +87,8 @@ namespace Code.Scrips
                     }
                 }
             }
-
-            //Scroll Wheel
+            
+            //Scroll Wheel -> not to be changed
             //mouse Scroll Delta either 1,0,-1
             if (Input.mouseScrollDelta.y != 0)
             {

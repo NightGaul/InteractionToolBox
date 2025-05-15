@@ -15,17 +15,14 @@ namespace Code.Scrips.DragAndDrop
         public Transform[] snapPoints;
         private Vector3 _originPosition;
 
-        [Header("Sound Effects")] public AudioClip putDownSound;
-        public AudioClip movingSound;
 
-        [Header("Visual Effects")] public OutlineMode outlineMode;
+        [Header("Visuals")] public OutlineMode outlineMode;
         public Color outlineColor = Color.white;
         [Range(0.1f,50f)] //Slider for width
         public float outlineWidth = 2f;
 
-
-        //To Do: Find out what you need from quick outline,
-        
+        [Header("Sounds")] public AudioClip putDownSound;
+        public AudioClip movingSound;
         void Start()
         {
             //for convenience is here, because of the tag dependency but might change it to manual-adding 
@@ -44,6 +41,7 @@ namespace Code.Scrips.DragAndDrop
                 var outline = draggable.AddComponent<Outline>();
                 outline.OutlineColor = outlineColor;
                 outline.OutlineWidth = outlineWidth;
+                
                 switch (outlineMode)
                 {
                     case (OutlineMode.ALWAYS):

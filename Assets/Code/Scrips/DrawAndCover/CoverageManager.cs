@@ -9,34 +9,32 @@ namespace Code.Scrips.DrawAndCover
         private static readonly int _maskTex = Shader.PropertyToID("_MaskTex");
         private static readonly int _revealTex = Shader.PropertyToID("_RevealTex");
         private static readonly int _baseTex = Shader.PropertyToID("_BaseTex");
+        
         [Header("Grid Settings")] public int gridWidth = 32;
         public int gridHeight = 16;
         public float cellSize = 10f;
         public Vector3 origin = Vector3.zero;
-
-        [Header("Debug")] public bool showGizmos = true;
-        private readonly Color _coveredColor = Color.red;
-        private readonly Color _uncoveredColor = Color.green;
+        
 
         [Header("Events")] public RightClickEventSO clickEvent;
 
-        [Header("Textures")] public Texture2D baseTexture; // Grass texture
+        [Header("Visuals")] public Texture2D baseTexture; // Grass texture
         public Texture2D revealTexture; // Dirt texture
         public Material coverageMaterial; // ShaderGraph material
         public GameObject plane;
         
         private Texture2D _maskTexture; // Dynamically created in script and updated at runtime
         
-        [FormerlySerializedAs("brushShape")] [Header("BrushSettings")]
-        public BrushShape brushshape;
-        public int brushRadius;
-
-        [Header("Audio")] public AudioClip drawingSound;
+        [Header("Sounds")] public AudioClip drawingSound;
         public AudioClip finishingSound;
         private AudioSource _camAudioSource;
         
 
-        [Header("Game Design Settings")] public float successPercentage = 95f;
+        [Header("Drawing Settings")] public float successPercentage = 95f;
+        public BrushShape brushshape;
+        public int brushRadius;
+        
+        
         private bool _finished;
 
         private Camera _cam;
@@ -175,20 +173,6 @@ namespace Code.Scrips.DrawAndCover
         {
             return _grid.GetCoveragePercent();
         }
-
-        private void OnDrawGizmos()
-        {
-            if (!showGizmos || _grid == null) return;
-
-            for (int x = 0; x < _grid.GetGridCoverage().GetLength(0); x++)
-            {
-                for (int y = 0; y < _grid.GetGridCoverage().GetLength(1); y++)
-                {
-                    Vector3 center = GridToWorld(new Vector2Int(x, y)) + new Vector3(cellSize / 2f, 0f, cellSize / 2f);
-                    Gizmos.color = _grid.IsCovered(x, y) ? _coveredColor : _uncoveredColor;
-                    Gizmos.DrawCube(center, new Vector3(cellSize, 0.1f, cellSize));
-                }
-            }
-        }
+        
     }
 }

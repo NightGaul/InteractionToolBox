@@ -379,7 +379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71355bbdfd514b53807d047c23a6677f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mashingType: 1
+  mashingType: 0
   requiredMashingAmount: 10
   mashVisualEffect: 0
   mashSound: {fileID: 8300000, guid: bac222c2515819f4bbce2a704abe7541, type: 3}

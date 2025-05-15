@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Code.ScriptableObjectScripts
 {
-    [CreateAssetMenu(fileName = "NewCameraSettings", menuName = "Camera/ThirdPersonSettingsSO")]
+    [CreateAssetMenu(fileName = "NewCameraSettings", menuName = "Settings/ThirdPersonSettingsSO")]
     public class ThirdPersonCameraSettingsSO : ScriptableObject
     {
         public float mouseSensitivity = 3f;

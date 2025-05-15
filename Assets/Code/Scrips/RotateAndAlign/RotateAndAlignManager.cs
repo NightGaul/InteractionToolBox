@@ -9,7 +9,7 @@ namespace Code.Scrips.RotateAndAlign
         [Header("Puzzle Pieces")]
         public RotatablePiece[] pieces;
 
-        [Header("Rotation Settings")]
+        [Header("Rotate and Align Settings")]
         //yes this is a bit clunky but limits the ability to create buggy puzzles
         public DivisorOf360 rotationAngleDivisorOf360 = DivisorOf360.ONE;
         public RotationAxis rotationAxis;
