@@ -361,6 +361,8 @@ GameObject:
   - component: {fileID: 329961644}
   - component: {fileID: 329961643}
   - component: {fileID: 329961642}
+  - component: {fileID: 329961646}
+  - component: {fileID: 329961645}
   m_Layer: 0
   m_Name: Sphere (1)
   m_TagString: Untagged
@@ -457,6 +459,48 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 329961640}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &329961645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 329961640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc2df78ccf149d28152e18ab6216e3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionPrompt: 
+  manager: {fileID: 1783687741}
+  isGoal: 0
+--- !u!54 &329961646
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 329961640}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &476334748
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,6 +533,7 @@ MonoBehaviour:
   clickEvent: {fileID: 0}
   dragEvent: {fileID: 0}
   interactEvent: {fileID: 11400000, guid: 0310d9b1aa12fa84bb74c51b888ed6d5, type: 2}
+  scrollEvent: {fileID: 0}
 --- !u!4 &476334750
 Transform:
   m_ObjectHideFlags: 0
@@ -521,6 +566,8 @@ GameObject:
   - component: {fileID: 751791889}
   - component: {fileID: 751791888}
   - component: {fileID: 751791887}
+  - component: {fileID: 751791891}
+  - component: {fileID: 751791890}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -617,6 +664,48 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 751791885}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &751791890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751791885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc2df78ccf149d28152e18ab6216e3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionPrompt: 
+  manager: {fileID: 1783687741}
+  isGoal: 0
+--- !u!54 &751791891
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751791885}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &818512418
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,9 +925,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactEvent: {fileID: 11400000, guid: 0310d9b1aa12fa84bb74c51b888ed6d5, type: 2}
-  cam: {fileID: 2086786010}
   handTransform: {fileID: 717868523}
-  objectGroup: {fileID: 818512419}
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0.0047169924, b: 0.0047169924, a: 1}
+  outlineWidth: 9.4
+  putDownSound: {fileID: 8300000, guid: bac222c2515819f4bbce2a704abe7541, type: 3}
+  successSound: {fileID: 8300000, guid: dedbddfea5fa46a4a8351aade6c254a0, type: 3}
 --- !u!1 &1793458547
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025,11 +1117,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc3551902b7c0464d8b35d3c2e3d181d, type: 3}
---- !u!20 &2086786010 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 7836560747939449113, guid: bc3551902b7c0464d8b35d3c2e3d181d, type: 3}
-  m_PrefabInstance: {fileID: 2086786009}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

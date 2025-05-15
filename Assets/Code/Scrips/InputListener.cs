@@ -15,10 +15,16 @@ namespace Code.Scrips
 
         private bool _isDragging;
         private GameObject _draggedObject;
+        private Camera _camera;
 
         //TO DO:
         //Dynamic Input, save with scriptable Object
 
+
+        private void Start()
+        {
+            _camera = Camera.main;
+        }
 
         void Update()
         {
@@ -28,7 +34,7 @@ namespace Code.Scrips
                 Vector3 mousePosition = Input.mousePosition;
 
 
-                Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+                Ray ray = _camera.ScreenPointToRay(mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
                     if (hit.collider.CompareTag("Draggable"))
@@ -67,16 +73,19 @@ namespace Code.Scrips
             // Interact Key
             if (Input.GetKeyUp(KeyCode.E))
             {
-                Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-                if (Physics.Raycast(ray, out RaycastHit hit))
+                if (_camera != null)
                 {
-                    if (hit.collider.CompareTag("Interactable"))
+                    Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+                    if (Physics.Raycast(ray, out RaycastHit hit))
                     {
-                        interactEvent.Raise(hit, true);
-                    }
-                    else
-                    {
-                        interactEvent.Raise(hit, false);
+                        if (hit.collider.CompareTag("Interactable"))
+                        {
+                            interactEvent.Raise(hit, true);
+                        }
+                        else
+                        {
+                            interactEvent.Raise(hit, false);
+                        }
                     }
                 }
             }
@@ -86,7 +95,7 @@ namespace Code.Scrips
             if (Input.mouseScrollDelta.y != 0)
             {
                 Vector3 mousePosition = Input.mousePosition;
-                Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+                Ray ray = _camera.ScreenPointToRay(mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
                     if (hit.collider.CompareTag("Scrollable"))
@@ -95,6 +104,9 @@ namespace Code.Scrips
                     }
                 }
             }
+            
+            
+            
             
         }
     }
