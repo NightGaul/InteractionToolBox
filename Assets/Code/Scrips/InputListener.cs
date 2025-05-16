@@ -26,8 +26,8 @@ namespace Code.Scrips
 
         void Update()
         {
-            // Paint CLick
-            if (Input.GetKeyDown(settingsSo.paintInput))
+            
+            if (Input.GetKey(settingsSo.paintInput))
             {
                 Vector3 mousePosition = Input.mousePosition;
                 clickEvent.Raise(mousePosition);
@@ -58,7 +58,7 @@ namespace Code.Scrips
             }
 
             // Release click
-            if (Input.GetKeyDown(settingsSo.selectInput))
+            if (Input.GetKeyUp(settingsSo.selectInput))
             {
                 if (_isDragging)
                 {

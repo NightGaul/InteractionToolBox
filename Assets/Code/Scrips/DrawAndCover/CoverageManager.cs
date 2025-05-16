@@ -1,3 +1,4 @@
+using Code.Scrips.UI;
 using Code.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -31,8 +32,11 @@ namespace Code.Scrips.DrawAndCover
         
 
         [Header("Drawing Settings")] public float successPercentage = 95f;
-        public BrushShape brushshape;
+        [Space]
+        public BrushShape brushShape;
         public int brushRadius;
+        public Sprite cursorSprite;
+        public bool useCustomCursor;
         
         
         private bool _finished;
@@ -44,7 +48,7 @@ namespace Code.Scrips.DrawAndCover
         {
             _grid = new CoverageGrid(gridWidth, gridHeight)
             {
-                brushshape = brushshape
+                brushshape = brushShape
             };
 
             // Generate blank mask texture (black = no reveal, white = full reveal)
@@ -89,6 +93,8 @@ namespace Code.Scrips.DrawAndCover
 
             _camAudioSource = _cam.gameObject.AddComponent<AudioSource>();
             _camAudioSource.clip = drawingSound;
+            
+            if(useCustomCursor)CustomCursor.instance.SetCursor(cursorSprite);
         }
 
         private void OnEnable()
