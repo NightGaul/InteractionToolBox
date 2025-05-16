@@ -421,10 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b93af6c41a7112d4882fbb572d530abd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWidth: 100
-  gridHeight: 50
-  cellSize: 3
-  origin: {x: 0, y: 0, z: 0}
+  cellSize: 1
   clickEvent: {fileID: 11400000, guid: 8231f7820d60d1d45ae5b589e04f9a22, type: 2}
   baseTexture: {fileID: 2800000, guid: 819311b7a66a8f740b104cf9f9ffadf5, type: 3}
   revealTexture: {fileID: 2800000, guid: c2e975e8a074dff45aee75e580a54344, type: 3}
@@ -434,7 +431,7 @@ MonoBehaviour:
   finishingSound: {fileID: 8300000, guid: dedbddfea5fa46a4a8351aade6c254a0, type: 3}
   successPercentage: 95
   brushShape: 2
-  brushRadius: 5
+  brushRadius: 1
   cursorSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   useCustomCursor: 0
 --- !u!224 &944068054
@@ -631,7 +628,7 @@ Transform:
   m_GameObject: {fileID: 1442062734}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 100, z: -10}
+  m_LocalPosition: {x: 0.2, y: 10.9, z: -0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
