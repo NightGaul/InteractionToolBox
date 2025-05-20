@@ -9,15 +9,13 @@ namespace Code.Scrips.FetchAndMatch
 {
     public class FetchAndMatchManager : ManagerBase
     {
-        //Can be more elegant but should be though through more
         [Header("FetchAndMatch Settings")]
         public InteractEventSO interactEvent;
         public Transform handTransform;
 
         [Header("Visuals")] public OutlineMode outlineMode;
         public Color outlineColor = Color.white;
-
-        [Range(0.1f, 50f)] //Slider for width
+        [Range(0.1f, 50f)]
         public float outlineWidth = 2f;
 
         [Header("Sounds")] public AudioClip putDownSound;
@@ -34,11 +32,15 @@ namespace Code.Scrips.FetchAndMatch
 
         private void Start()
         {
+            AudioSetup();
+        }
+
+        private void AudioSetup()
+        {
             _dropAudioSource = handTransform.AddComponent<AudioSource>();
             _successAudioSource = handTransform.AddComponent<AudioSource>();
             _successAudioSource.clip = successSound;
         }
-
         private void OnEnable()
         {
             interactEvent.onInteract += HandleInteract;
@@ -78,7 +80,7 @@ namespace Code.Scrips.FetchAndMatch
             _dropAudioSource.PlayOneShot(putDownSound);
             if (_isOnGoal && (_possibleSnapObject != null))
             {
-                _objectBeingHeld.transform.position = _possibleSnapObject.position; //snap to obj
+                _objectBeingHeld.transform.position = _possibleSnapObject.position;
                 Success();
             }
 
@@ -95,7 +97,6 @@ namespace Code.Scrips.FetchAndMatch
 
         public override void Success()
         {
-            //Add things that happen when u do right
             _successAudioSource.Play();
             Debug.Log("success");
         }
@@ -108,6 +109,12 @@ namespace Code.Scrips.FetchAndMatch
         public void SetPossibleSnapObject(Transform possibleSnapObject)
         {
             _possibleSnapObject = possibleSnapObject;
+        }
+
+        private void OnDestroy()
+        {
+            Destroy(_dropAudioSource);
+            Destroy(_successAudioSource);
         }
     }
 }

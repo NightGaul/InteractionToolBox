@@ -9,40 +9,41 @@ namespace Code.Scrips.DragAndDrop
 {
     public class DragAndDropManager : ManagerBase
     {
-        
-
         [Header("Drag and Drop Settings")] public DragEventSO dragEvent;
         public float snapRadius = 2.0f; // Max distance for snapping
-        public Transform[] snapPoints;
+        public Transform[] snappableObjects;
+        public GameObject[] draggableObjects;
+
         private Vector3 _originPosition;
 
 
         [Header("Visuals")] public OutlineMode outlineMode;
         public Color outlineColor = Color.white;
-        [Range(0.1f,50f)] //Slider for width
-        public float outlineWidth = 2f;
+
+        [Range(0.1f, 50f)] public float outlineWidth = 2f;
 
         [Header("Sounds")] public AudioClip putDownSound;
         public AudioClip movingSound;
+        
+        private AudioSource _putDownAudioSource;
+        private AudioSource _movingAudioSource;
+        private Camera _cam;
+
         void Start()
         {
-            //for convenience is here, because of the tag dependency but might change it to manual-adding 
-            snapPoints = GameObject.FindGameObjectsWithTag("SnapPoint")
-                .Select(obj => obj.transform)
-                .ToArray();
-            GameObject[] draggables = GameObject.FindGameObjectsWithTag("Draggable").ToArray();
+            AudioSetup();
+            OutlineSetup();
+        }
 
-            foreach (var draggable in draggables)
+        private void OutlineSetup()
+        {
+            foreach (var draggable in draggableObjects)
             {
-                //It's better to use two for once and continuous sounds but gets complicated quickly so
-                //I decided to leave it for this until it shoots me in the leg
-                draggable.AddComponent<AudioSource>();
-                
                 //Add modes for more Outline Modes
                 var outline = draggable.AddComponent<Outline>();
                 outline.OutlineColor = outlineColor;
                 outline.OutlineWidth = outlineWidth;
-                
+
                 switch (outlineMode)
                 {
                     case (OutlineMode.ALWAYS):
@@ -53,7 +54,16 @@ namespace Code.Scrips.DragAndDrop
                         break;
                 }
             }
+        }
 
+        private void AudioSetup()
+        {
+            _cam = Camera.main;
+            _putDownAudioSource = _cam.AddComponent<AudioSource>();
+            _putDownAudioSource.playOnAwake = false;
+            _movingAudioSource = _cam.AddComponent<AudioSource>();
+            _movingAudioSource.playOnAwake = false;
+            _movingAudioSource.clip = movingSound;
         }
 
         void OnEnable()
@@ -77,11 +87,11 @@ namespace Code.Scrips.DragAndDrop
 
         private void HandleDragUpdate(GameObject obj, Vector3 position)
         {
-            Ray ray = Camera.main.ScreenPointToRay(position);
+            Ray ray = _cam.ScreenPointToRay(position);
             Physics.Raycast(ray, out RaycastHit hit);
-
+            
             obj.transform.position = new Vector3(hit.point.x, obj.transform.position.y, hit.point.z);
-            PlaySoundContinuously(obj, movingSound);
+            if (!_movingAudioSource.isPlaying) _movingAudioSource.Play();
         }
 
 
@@ -92,46 +102,47 @@ namespace Code.Scrips.DragAndDrop
             if (nearestPoint != null && (Vector3.Distance(nearestPoint.position, obj.transform.position) < snapRadius))
             {
                 obj.transform.position = nearestPoint.position;
-                StopPreviousAudioSource(obj);
-                PlaySoundOnce(obj, putDownSound);
+                _putDownAudioSource.PlayOneShot(putDownSound);
             }
             else
             {
-                StopPreviousAudioSource(obj);
                 obj.transform.position = _originPosition;
             }
         }
 
         private Transform GetNearestSnapPoint(Vector3 position)
         {
-            return snapPoints
+            return snappableObjects
                 .OrderBy(point => Vector3.Distance(position, point.position))
                 .FirstOrDefault(point => Vector3.Distance(position, point.position) < snapRadius);
         }
 
-        private void PlaySoundOnce(GameObject obj, AudioClip clip)
-        {
-            var audioSource = obj.GetComponent<AudioSource>();
-            audioSource.clip = clip;
-            audioSource.Play();
-        }
 
-        private void PlaySoundContinuously(GameObject obj, AudioClip clip)
-        {
-            var audioSource = obj.GetComponent<AudioSource>();
-            audioSource.clip = clip;
-            if (!audioSource.isPlaying) audioSource.Play();
-        }
-
-        private void StopPreviousAudioSource(GameObject obj)
-        {
-            var audioSource = obj.GetComponent<AudioSource>();
-            if (audioSource.isPlaying) audioSource.Stop();
-        }
-
+        //TODO: Implement this
         public override void Success()
         {
             throw new System.NotImplementedException();
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var draggable in draggableObjects)
+            {
+                Destroy(_movingAudioSource);
+                Destroy(_putDownAudioSource);
+
+                switch (outlineMode)
+                {
+                    case (OutlineMode.ALWAYS):
+                        Destroy(draggable.GetComponent<OutlineAlways>());
+                        break;
+                    case (OutlineMode.ON_HOVER):
+                        Destroy(draggable.GetComponent<OutlineOnHover>());
+                        break;
+                }
+
+                Destroy(draggable.GetComponent<Outline>());
+            }
         }
     }
 }

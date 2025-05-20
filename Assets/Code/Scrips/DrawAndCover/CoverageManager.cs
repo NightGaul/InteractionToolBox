@@ -1,8 +1,8 @@
+using System;
 using Code.Scrips.Abstractions;
 using Code.Scrips.UI;
 using Code.ScriptableObjects;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Code.Scrips.DrawAndCover
 {
@@ -12,18 +12,14 @@ namespace Code.Scrips.DrawAndCover
         private static readonly int _revealTex = Shader.PropertyToID("_RevealTex");
         private static readonly int _baseTex = Shader.PropertyToID("_BaseTex");
 
-        [Header("Grid Settings")]
-        public float cellSize = 10f; // size of each grid cell (world units)
+        [Header("Grid Settings")] public float cellSize = 10f; // size of each grid cell (world units)
         private int _gridWidth;
         private int _gridHeight;
-        private Vector3 _origin; // world space origin of grid (plane corner)
 
-        [Header("Events")]
-        public RightClickEventSO clickEvent;
+        [Header("Events")] public RightClickEventSO clickEvent;
 
-        [Header("Visuals")]
-        public Texture2D baseTexture; // Grass texture
-        public Texture2D revealTexture; // Dirt texture
+        [Header("Visuals")] public Texture2D baseTexture;
+        public Texture2D revealTexture;
         public Material coverageMaterial; // ShaderGraph material
         public GameObject plane;
 
@@ -31,15 +27,12 @@ namespace Code.Scrips.DrawAndCover
         private MeshFilter _meshFilter;
         private CoverageGrid _grid;
 
-        [Header("Sounds")]
-        public AudioClip drawingSound;
+        [Header("Sounds")] public AudioClip drawingSound;
         public AudioClip finishingSound;
         private AudioSource _camAudioSource;
 
-        [Header("Drawing Settings")]
-        public float successPercentage = 95f;
-        [Space]
-        public BrushShape brushShape;
+        [Header("Drawing Settings")] public float successPercentage = 95f;
+        [Space] public BrushShape brushShape;
         public int brushRadius;
         public Sprite cursorSprite;
         public bool useCustomCursor;
@@ -49,51 +42,79 @@ namespace Code.Scrips.DrawAndCover
 
         private void Start()
         {
+            if (!ValidatePlane()) return;
+
+            CalculateGridDimensions();
+            if (!ValidateGridSize()) return;
+
+            InitializeGrid();
+            CreateMaskTexture();
+            ApplyMaterialTextures();
+            AssignMaterialToPlane();
+
+            SetupCameraAndAudio();
+
+            if (useCustomCursor) CustomCursor.instance.SetCursor(cursorSprite);
+        }
+
+        private bool ValidatePlane()
+        {
             if (plane == null)
             {
                 Debug.LogError("CoverageManager: Plane GameObject is not assigned.");
-                return;
+                return false;
             }
 
             _meshFilter = plane.GetComponent<MeshFilter>();
             if (_meshFilter == null || _meshFilter.sharedMesh == null)
             {
                 Debug.LogError("CoverageManager: Plane must have a MeshFilter with a valid mesh.");
-                return;
+                return false;
             }
 
-            // Get mesh bounds in local space
-            Bounds meshBounds = _meshFilter.sharedMesh.bounds;
+            return true;
+        }
 
-            // Calculate actual plane size in local space considering scaling
+        private void CalculateGridDimensions()
+        {
+            Bounds meshBounds = _meshFilter.sharedMesh.bounds;
             Vector3 planeSize = Vector3.Scale(meshBounds.size, plane.transform.localScale);
 
-            // Calculate world space origin as corner of the mesh bounds
-            _origin = plane.transform.TransformPoint(meshBounds.min);
+            plane.transform.TransformPoint(meshBounds.min);
 
-            // Compute grid size based on cellSize, ensuring no zero or negative values
             _gridWidth = Mathf.FloorToInt(planeSize.x / cellSize);
             _gridHeight = Mathf.FloorToInt(planeSize.z / cellSize);
-            
-            //for debug purposes
-            //Debug.Log($"Grid Width: {_gridWidth}, Grid Height: {_gridHeight}");
-            
+
+            // Debug.Log($"Grid Width: {_gridWidth}, Grid Height: {_gridHeight}");
+        }
+
+        private bool ValidateGridSize()
+        {
             if (_gridWidth <= 0 || _gridHeight <= 0)
             {
-                Debug.LogError($"CoverageManager: Invalid grid size calculated (Width: {_gridWidth}, Height: {_gridHeight}). Check cellSize and plane scale.");
-                return;
+                Debug.LogError(
+                    $"CoverageManager: Invalid grid size calculated (Width: {_gridWidth}, Height: {_gridHeight}). Check cellSize and plane scale.");
+                return false;
             }
 
-            // Initialize grid
+            return true;
+        }
+
+        private void InitializeGrid()
+        {
             _grid = new CoverageGrid(_gridWidth, _gridHeight)
             {
                 brushshape = brushShape
             };
+        }
 
-            // Create mask texture
-            _maskTexture = new Texture2D(_gridWidth, _gridHeight, TextureFormat.RGBA32, false);
-            _maskTexture.filterMode = FilterMode.Point;
-            _maskTexture.wrapMode = TextureWrapMode.Clamp;
+        private void CreateMaskTexture()
+        {
+            _maskTexture = new Texture2D(_gridWidth, _gridHeight, TextureFormat.RGBA32, false)
+            {
+                filterMode = FilterMode.Point,
+                wrapMode = TextureWrapMode.Clamp
+            };
 
             for (int x = 0; x < _gridWidth; x++)
             {
@@ -102,28 +123,36 @@ namespace Code.Scrips.DrawAndCover
                     _maskTexture.SetPixel(x, y, new Color(0, 0, 0, 1));
                 }
             }
-            _maskTexture.Apply();
 
-            // Setup material textures
+            _maskTexture.Apply();
+        }
+
+        private void ApplyMaterialTextures()
+        {
             coverageMaterial.SetTexture(_baseTex, baseTexture);
             coverageMaterial.SetTexture(_revealTex, revealTexture);
             coverageMaterial.SetTexture(_maskTex, _maskTexture);
+        }
 
-            // Assign material to plane
+        private void AssignMaterialToPlane()
+        {
             Renderer planeRenderer = plane.GetComponent<Renderer>();
             if (planeRenderer == null)
             {
                 Debug.LogError("CoverageManager: Plane GameObject has no Renderer component.");
                 return;
             }
+
             planeRenderer.material = coverageMaterial;
-
-            _cam = Camera.main;
-            _camAudioSource = _cam.gameObject.AddComponent<AudioSource>();
-            _camAudioSource.clip = drawingSound;
-
-            if (useCustomCursor) CustomCursor.instance.SetCursor(cursorSprite);
         }
+
+        private void SetupCameraAndAudio()
+        {
+            _cam = Camera.main;
+            if (_cam != null) _camAudioSource = _cam.gameObject.AddComponent<AudioSource>();
+            _camAudioSource.clip = drawingSound;
+        }
+
 
         private void OnEnable()
         {
@@ -141,10 +170,7 @@ namespace Code.Scrips.DrawAndCover
 
             if (!_finished && GetCoveragePercentage() > successPercentage)
             {
-                _finished = true;
-                var finishingSource = _cam.gameObject.AddComponent<AudioSource>();
-                finishingSource.clip = finishingSound;
-                finishingSource.Play();
+                Success();
             }
         }
 
@@ -183,14 +209,7 @@ namespace Code.Scrips.DrawAndCover
             int y = Mathf.FloorToInt((localPos.z - meshMin.z) / cellSize);
             return new Vector2Int(x, y);
         }
-
-        private Vector3 GridToWorld(Vector2Int gridPosition)
-        {
-            Vector3 meshMin = _meshFilter.sharedMesh.bounds.min;
-            Vector3 localPos = new Vector3(meshMin.x + gridPosition.x * cellSize, 0, meshMin.z + gridPosition.y * cellSize);
-            return plane.transform.TransformPoint(localPos);
-        }
-
+        
         private void MarkAtWorldPosition(Vector3 worldPos)
         {
             if (_grid == null)
@@ -218,7 +237,15 @@ namespace Code.Scrips.DrawAndCover
 
         public override void Success()
         {
-            throw new System.NotImplementedException();
+            _finished = true;
+            var finishingSource = _cam.gameObject.AddComponent<AudioSource>();
+            finishingSource.clip = finishingSound;
+            finishingSource.Play();
+        }
+
+        private void OnDestroy()
+        {
+            Destroy(_camAudioSource);
         }
     }
 }

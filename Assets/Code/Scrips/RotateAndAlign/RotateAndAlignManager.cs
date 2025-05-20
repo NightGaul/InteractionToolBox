@@ -7,49 +7,56 @@ namespace Code.Scrips.RotateAndAlign
 {
     public class RotateAndAlignManager : ManagerBase
     {
-        [Header("Puzzle Pieces")]
-        public RotatablePiece[] pieces;
+        [Header("Puzzle Pieces")] public RotatablePiece[] pieces;
 
         [Header("Rotate and Align Settings")]
         //yes this is a bit clunky but limits the ability to create buggy puzzles
         public DivisorOf360 rotationAngleDivisorOf360 = DivisorOf360.ONE;
         public RotationAxis rotationAxis;
         public bool useAutoScramble;
-        [Space]
-        public ScrollEventSO scrollEvent;
-        
-        
+        [Space] public ScrollEventSO scrollEvent;
+
+
         [Header("Visuals")] public OutlineMode outlineMode;
         public Color outlineColor;
-        [Range(0.1f,50f)]
-        public float outlineWidth;
-        
-        [Header("Sounds")]
-        public AudioClip clickSound;
+        [Range(0.1f, 50f)] public float outlineWidth;
+
+        [Header("Sounds")] public AudioClip clickSound;
         public AudioClip rightRotateSound;
-        
+
         private bool _puzzleSolved;
+
         private void OnEnable()
+        {
+            PieceSetUp();
+        }
+        private void Update()
+        {
+            CheckPuzzleStatus();
+        }
+
+        private void PieceSetUp()
         {
             foreach (var piece in pieces)
             {
                 piece.SetScrollEvent(scrollEvent);
                 piece.SetRotationSpeed((int)rotationAngleDivisorOf360);
-                piece.SetOutline(outlineMode,outlineColor,outlineWidth);
+                piece.SetOutline(outlineMode, outlineColor, outlineWidth);
                 piece.SetRotationAxis(rotationAxis);
                 piece.SetTargetAngle();
-                if(useAutoScramble)piece.AutoScramble();
+                if (useAutoScramble) piece.AutoScramble();
                 piece.SetClickingClip(clickSound);
                 piece.SetRightRotationClip(rightRotateSound);
             }
         }
 
-        void Update()
+
+        private void CheckPuzzleStatus()
         {
             if (_puzzleSolved) return;
 
             bool allSolved = true;
-            
+
             foreach (var piece in pieces)
             {
                 if (!piece.isSolved)
@@ -61,22 +68,24 @@ namespace Code.Scrips.RotateAndAlign
 
             if (allSolved)
             {
-                _puzzleSolved = true;
-                OnPuzzleSolved();
+                Success();
             }
-        }
-
-        private void OnPuzzleSolved()
-        {
-            Debug.Log("Puzzle Solved!");
-            
-            // TODO: Polishing determines what is gonna be added here
-            // Example: Play sound, open a door, spawn fireworks, etc.
         }
 
         public override void Success()
         {
-            throw new System.NotImplementedException();
+            _puzzleSolved = true;
+            Debug.Log("Puzzle Solved!");
         }
+
+        private void OnDisable()
+        {
+            foreach (var piece in pieces)
+            {
+                Destroy(piece);
+            }
+        }
+        
+        
     }
 }

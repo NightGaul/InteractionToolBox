@@ -10,8 +10,13 @@ namespace Code.Scrips.RotateAndAlign
     [RequireComponent(typeof(BoxCollider))]
     public class RotatablePiece : MonoBehaviour
     {
-        [Header("Rotation Settings")] 
+        [Header("Rotation Settings")]
+        [Tooltip(
+            "If you set this manually be very careful! It has to be dividable by the rotation-angle in the manager!")]
         public float targetAngle;
+
+        [Tooltip("Don't touch this with your unwashed finger!")]
+        public bool isSolved;
 
         private ScrollEventSO _scrollEvent;
 
@@ -27,7 +32,6 @@ namespace Code.Scrips.RotateAndAlign
         private bool _isMouseOver;
         private bool _snapped;
 
-        public bool isSolved;
 
         private AudioSource _clickingSoundSource;
         private AudioClip _clickingSound;
@@ -141,7 +145,7 @@ namespace Code.Scrips.RotateAndAlign
                     break;
             }
 
-            isSolved = (Math.Abs(currentAngle - targetAngle) < _TOLERANCE);
+            isSolved = (Mathf.Abs(Math.Abs(currentAngle) - Math.Abs(targetAngle)) < _TOLERANCE);
             if (isSolved) _rightRotationSource.Play();
         }
 

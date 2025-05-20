@@ -3,29 +3,31 @@ using UnityEngine.UI;
 
 namespace Code.Scrips.UI
 {
+    [RequireComponent(typeof(Image))]
     public class CustomCursor : MonoBehaviour
     {
         public static CustomCursor instance; // Singleton for easy access
 
 
         private Image _image;
+        private RectTransform _rectTransform;
 
         private void Awake()
         {
             if (instance == null)
+            {
                 instance = this;
+            }
             else
+            {
                 Destroy(gameObject);
-        }
+            }
 
-        private RectTransform _rectTransform;
-
-        void Start()
-        {
             _rectTransform = GetComponent<RectTransform>();
             _image = GetComponent<Image>();
             _image.enabled = false;
         }
+
 
         void Update()
         {
@@ -36,9 +38,7 @@ namespace Code.Scrips.UI
         public void SetCursor(Sprite newCursorSprite)
         {
             _image.enabled = true;
-            Debug.Log("set cursor");
             _image.sprite = newCursorSprite;
-            //cursorImage.sprite = newCursorSprite;
             Cursor.visible = false;
         }
     }

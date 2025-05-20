@@ -17,32 +17,44 @@ namespace Code.Scrips.ButtonMashing
 
         private bool _alreadyWon;
 
-        [Header ("Mash-Effect Intensity")]
-        [Range(0f,1f)]
+        [Header("Mash-Effect Intensity")] [Range(0f, 1f)]
         public float startIntensity;
-        [Range(0f,1f)]
-        public float endIntensity;
+
+        [Range(0f, 1f)] public float endIntensity;
         private MashingEffectBase _currentEffectType;
 
         private MashingTypeBase _currentMashingType; // Reference to the current mashing type class
 
         private void Start()
         {
-            switch (mashingType)
+            MashingTypeSetup();
+            AudioSetup();
+            VisualEffectsSetup();
+        }
+        private void Update()
+        {
+            if (_alreadyWon) return; //makes it less taxing for system
+            MashingExecution();
+            
+        }
+
+        private void MashingExecution()
+        {
+            //this is an inefficient way, but I'm kinda stuck with this solution
+            var mashingAlreadyDone = _currentMashingType.HandleMashing();
+            if (mashingAlreadyDone >= requiredMashingAmount)
             {
-                //this might be problematic, because you cant enter the right keys
-                case MashingType.SINGLE_BUTTON:
-                    _currentMashingType = this.AddComponent<SingleButtonMashing>();
-                    break;
-                case MashingType.ALTERNATE_BUTTON:
-                    _currentMashingType = this.AddComponent<AlternateButtonMashing>();
-                    break;
+                Success();
             }
 
-            _currentMashingType.SetMashingSound(mashSound);
-            _audioSourceFinish   = this.AddComponent<AudioSource>();
-            _audioSourceFinish.clip = finishSound;
-            
+            if (!_currentEffectType) return;
+            float strength = ((float)mashingAlreadyDone / requiredMashingAmount);
+
+            _currentEffectType.ApplyMashingEffect(strength);
+        }
+
+        private void VisualEffectsSetup()
+        {
             switch (mashVisualEffect)
             {
                 case VisualEffect.SCREEN_SHAKE:
@@ -59,35 +71,39 @@ namespace Code.Scrips.ButtonMashing
             _currentEffectType.SetMashingIntensity(startIntensity, endIntensity);
         }
 
-        void Update()
+        private void AudioSetup()
         {
-            if (_alreadyWon) return; //makes it less taxing for system
-            
-            //this is an inefficient way, but I'll have to ask someone else because I'm kinda stuck with this solution
-            var mashingAlreadyDone = _currentMashingType.HandleMashing();
-            if (mashingAlreadyDone >= requiredMashingAmount)
-            {
-                _audioSourceFinish.Play();
-                Debug.Log("u win");
-                _alreadyWon = true;
-                //Add Win effect
-            }
-
-            if (!_currentEffectType) return;
-            float strength = ((float)mashingAlreadyDone / requiredMashingAmount);
-
-            _currentEffectType.ApplyMashingEffect(strength);
+            _currentMashingType.SetMashingSound(mashSound);
+            _audioSourceFinish = this.AddComponent<AudioSource>();
+            _audioSourceFinish.clip = finishSound;
         }
+
+        private void MashingTypeSetup()
+        {
+            switch (mashingType)
+            {
+                //this might be problematic, because you cant enter the right keys
+                case MashingType.SINGLE_BUTTON:
+                    _currentMashingType = this.AddComponent<SingleButtonMashing>();
+                    break;
+                case MashingType.ALTERNATE_BUTTON:
+                    _currentMashingType = this.AddComponent<AlternateButtonMashing>();
+                    break;
+            }
+        }
+
 
         private void OnDestroy()
         {
             Destroy(_currentEffectType.gameObject);
             Destroy(_currentMashingType.gameObject);
+            Destroy(_audioSourceFinish);
         }
 
         public override void Success()
         {
-            throw new System.NotImplementedException();
+            _audioSourceFinish.Play();
+            _alreadyWon = true;
         }
     }
 }
