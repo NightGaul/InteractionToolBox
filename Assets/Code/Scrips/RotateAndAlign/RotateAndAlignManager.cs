@@ -1,10 +1,11 @@
+using Code.Scrips.Abstractions;
 using Code.Scrips.VisualHelpers;
 using Code.ScriptableObjectScripts;
 using UnityEngine;
 
 namespace Code.Scrips.RotateAndAlign
 {
-    public class RotateAndAlignManager : MonoBehaviour
+    public class RotateAndAlignManager : ManagerBase
     {
         [Header("Puzzle Pieces")]
         public RotatablePiece[] pieces;
@@ -71,6 +72,11 @@ namespace Code.Scrips.RotateAndAlign
             
             // TODO: Polishing determines what is gonna be added here
             // Example: Play sound, open a door, spawn fireworks, etc.
+        }
+
+        public override void Success()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

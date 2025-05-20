@@ -1,4 +1,5 @@
 using System.Linq;
+using Code.Scrips.Abstractions;
 using Code.Scrips.VisualHelpers;
 using Code.ScriptableObjectScripts;
 using Unity.VisualScripting;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace Code.Scrips.DragAndDrop
 {
-    public class DragAndDropManager : MonoBehaviour
+    public class DragAndDropManager : ManagerBase
     {
         
 
@@ -126,6 +127,11 @@ namespace Code.Scrips.DragAndDrop
         {
             var audioSource = obj.GetComponent<AudioSource>();
             if (audioSource.isPlaying) audioSource.Stop();
+        }
+
+        public override void Success()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

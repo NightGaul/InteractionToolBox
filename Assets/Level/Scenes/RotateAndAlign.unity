@@ -163,10 +163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6261657388380524b8d0a307c5532258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickEvent: {fileID: 0}
-  dragEvent: {fileID: 0}
-  interactEvent: {fileID: 0}
+  clickEvent: {fileID: 11400000, guid: 8231f7820d60d1d45ae5b589e04f9a22, type: 2}
+  dragEvent: {fileID: 11400000, guid: e199dc000e47e214bb97b0edd7d1e84c, type: 2}
+  interactEvent: {fileID: 11400000, guid: 0310d9b1aa12fa84bb74c51b888ed6d5, type: 2}
   scrollEvent: {fileID: 11400000, guid: e0e366e1d53d5e4418aea49615308ca4, type: 2}
+  settingsSo: {fileID: 11400000, guid: 2a4d2e0f83516ad479971bc143c38550, type: 2}
 --- !u!1001 &201749663
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using System;
+using Code.Scrips.Abstractions;
 using Code.Scrips.VisualHelpers;
 using Code.ScriptableObjectScripts;
 using Unity.VisualScripting;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace Code.Scrips.FetchAndMatch
 {
-    public class FetchAndMatchManager : MonoBehaviour
+    public class FetchAndMatchManager : ManagerBase
     {
         //Can be more elegant but should be though through more
         [Header("FetchAndMatch Settings")]
@@ -92,7 +93,7 @@ namespace Code.Scrips.FetchAndMatch
             return objectGoal != null && targetGoal != null && objectGoal == targetGoal;
         }
 
-        private void Success()
+        public override void Success()
         {
             //Add things that happen when u do right
             _successAudioSource.Play();

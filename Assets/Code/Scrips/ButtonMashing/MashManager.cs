@@ -1,4 +1,4 @@
-using System;
+using Code.Scrips.Abstractions;
 using Code.Scrips.ButtonMashing.MashingEffects;
 using Code.Scrips.ButtonMashing.MashingTypes;
 using Unity.VisualScripting;
@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Code.Scrips.ButtonMashing
 {
-    public class MashManager : MonoBehaviour
+    public class MashManager : ManagerBase
     {
         [Header("Mashing Settings")] public MashingType mashingType;
         public int requiredMashingAmount;
@@ -17,10 +17,11 @@ namespace Code.Scrips.ButtonMashing
 
         private bool _alreadyWon;
 
+        [Header ("Mash-Effect Intensity")]
         [Range(0f,1f)]
-        public float mashEffectIntensityStart;
+        public float startIntensity;
         [Range(0f,1f)]
-        public float mashEffectIntensityEnd;
+        public float endIntensity;
         private MashingEffectBase _currentEffectType;
 
         private MashingTypeBase _currentMashingType; // Reference to the current mashing type class
@@ -55,7 +56,7 @@ namespace Code.Scrips.ButtonMashing
                     return;
             }
 
-            _currentEffectType.SetMashingIntensity(mashEffectIntensityStart, mashEffectIntensityEnd);
+            _currentEffectType.SetMashingIntensity(startIntensity, endIntensity);
         }
 
         void Update()
@@ -82,6 +83,11 @@ namespace Code.Scrips.ButtonMashing
         {
             Destroy(_currentEffectType.gameObject);
             Destroy(_currentMashingType.gameObject);
+        }
+
+        public override void Success()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

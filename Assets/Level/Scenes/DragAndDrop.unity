@@ -259,11 +259,11 @@ MonoBehaviour:
   dragEvent: {fileID: 11400000, guid: e199dc000e47e214bb97b0edd7d1e84c, type: 2}
   snapRadius: 5
   snapPoints: []
-  putDownSound: {fileID: 8300000, guid: dedbddfea5fa46a4a8351aade6c254a0, type: 3}
-  movingSound: {fileID: 8300000, guid: b04826d535c815a478fba31218cbf8e4, type: 3}
   outlineMode: 1
   outlineColor: {r: 1, g: 0.023584902, b: 0.023584902, a: 1}
   outlineWidth: 10
+  putDownSound: {fileID: 8300000, guid: dedbddfea5fa46a4a8351aade6c254a0, type: 3}
+  movingSound: {fileID: 8300000, guid: b04826d535c815a478fba31218cbf8e4, type: 3}
 --- !u!4 &154878992
 Transform:
   m_ObjectHideFlags: 0
@@ -957,6 +957,7 @@ MonoBehaviour:
   dragEvent: {fileID: 11400000, guid: e199dc000e47e214bb97b0edd7d1e84c, type: 2}
   interactEvent: {fileID: 0}
   scrollEvent: {fileID: 0}
+  settingsSo: {fileID: 11400000, guid: 2a4d2e0f83516ad479971bc143c38550, type: 2}
 --- !u!4 &1526305960
 Transform:
   m_ObjectHideFlags: 0

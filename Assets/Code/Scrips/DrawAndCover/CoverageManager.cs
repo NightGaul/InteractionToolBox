@@ -1,3 +1,4 @@
+using Code.Scrips.Abstractions;
 using Code.Scrips.UI;
 using Code.ScriptableObjects;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.Serialization;
 
 namespace Code.Scrips.DrawAndCover
 {
-    public class CoverageManager : MonoBehaviour
+    public class CoverageManager : ManagerBase
     {
         private static readonly int _maskTex = Shader.PropertyToID("_MaskTex");
         private static readonly int _revealTex = Shader.PropertyToID("_RevealTex");
@@ -213,6 +214,11 @@ namespace Code.Scrips.DrawAndCover
         private float GetCoveragePercentage()
         {
             return _grid.GetCoveragePercent();
+        }
+
+        public override void Success()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
