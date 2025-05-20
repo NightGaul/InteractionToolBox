@@ -22,8 +22,7 @@ namespace Code.Scrips.ButtonMashing
 
         [Range(0f, 1f)] public float endIntensity;
         private MashingEffectBase _currentEffectType;
-
-        private MashingTypeBase _currentMashingType; // Reference to the current mashing type class
+        private MashingTypeBase _currentMashingType;
 
         private void Start()
         {
@@ -33,14 +32,13 @@ namespace Code.Scrips.ButtonMashing
         }
         private void Update()
         {
-            if (_alreadyWon) return; //makes it less taxing for system
+            if (_alreadyWon) return; 
             MashingExecution();
             
         }
 
         private void MashingExecution()
         {
-            //this is an inefficient way, but I'm kinda stuck with this solution
             var mashingAlreadyDone = _currentMashingType.HandleMashing();
             if (mashingAlreadyDone >= requiredMashingAmount)
             {
@@ -82,12 +80,14 @@ namespace Code.Scrips.ButtonMashing
         {
             switch (mashingType)
             {
-                //this might be problematic, because you cant enter the right keys
                 case MashingType.SINGLE_BUTTON:
                     _currentMashingType = this.AddComponent<SingleButtonMashing>();
                     break;
                 case MashingType.ALTERNATE_BUTTON:
                     _currentMashingType = this.AddComponent<AlternateButtonMashing>();
+                    break;
+                default:
+                    _currentMashingType = this.AddComponent<SingleButtonMashing>();
                     break;
             }
         }

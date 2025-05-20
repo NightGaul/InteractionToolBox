@@ -24,7 +24,7 @@ namespace Code.Scrips.DragAndDrop
 
         [Header("Sounds")] public AudioClip putDownSound;
         public AudioClip movingSound;
-        
+
         private AudioSource _putDownAudioSource;
         private AudioSource _movingAudioSource;
         private Camera _cam;
@@ -39,7 +39,6 @@ namespace Code.Scrips.DragAndDrop
         {
             foreach (var draggable in draggableObjects)
             {
-                //Add modes for more Outline Modes
                 var outline = draggable.AddComponent<Outline>();
                 outline.OutlineColor = outlineColor;
                 outline.OutlineWidth = outlineWidth;
@@ -89,7 +88,7 @@ namespace Code.Scrips.DragAndDrop
         {
             Ray ray = _cam.ScreenPointToRay(position);
             Physics.Raycast(ray, out RaycastHit hit);
-            
+
             obj.transform.position = new Vector3(hit.point.x, obj.transform.position.y, hit.point.z);
             if (!_movingAudioSource.isPlaying) _movingAudioSource.Play();
         }

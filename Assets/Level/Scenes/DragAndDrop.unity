@@ -258,7 +258,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dragEvent: {fileID: 11400000, guid: e199dc000e47e214bb97b0edd7d1e84c, type: 2}
   snapRadius: 5
-  snapPoints: []
+  snappableObjects:
+  - {fileID: 2049397255}
+  - {fileID: 2057109684}
+  - {fileID: 1204752304}
+  - {fileID: 2136933140}
+  - {fileID: 854335515}
+  draggableObjects:
+  - {fileID: 108671380}
   outlineMode: 1
   outlineColor: {r: 1, g: 0.023584902, b: 0.023584902, a: 1}
   outlineWidth: 10
