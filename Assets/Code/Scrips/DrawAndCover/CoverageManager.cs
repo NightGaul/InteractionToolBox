@@ -1,7 +1,8 @@
 using System;
 using Code.Scrips.Abstractions;
+using Code.Scrips.AudioHelpers;
 using Code.Scrips.UI;
-using Code.ScriptableObjects;
+using Code.ScriptableObjectScripts;
 using UnityEngine;
 
 namespace Code.Scrips.DrawAndCover
@@ -30,6 +31,7 @@ namespace Code.Scrips.DrawAndCover
         [Header("Sounds")] public AudioClip drawingSound;
         public AudioClip finishingSound;
         private AudioSource _camAudioSource;
+        private AudioFader _audioFader;
 
         [Header("Drawing Settings")] public float successPercentage = 95f;
         [Space] public BrushShape brushShape;
@@ -150,6 +152,8 @@ namespace Code.Scrips.DrawAndCover
         {
             _cam = Camera.main;
             if (_cam != null) _camAudioSource = _cam.gameObject.AddComponent<AudioSource>();
+            _audioFader = gameObject.AddComponent<AudioFader>();
+            _audioFader.SetAudioSource(_camAudioSource);
             _camAudioSource.clip = drawingSound;
         }
 
@@ -157,11 +161,13 @@ namespace Code.Scrips.DrawAndCover
         private void OnEnable()
         {
             clickEvent.onInputReceived += HandleClick;
+            clickEvent.onInputStop += StopClick;
         }
 
         private void OnDisable()
         {
             clickEvent.onInputReceived -= HandleClick;
+            clickEvent.onInputStop -= StopClick;
         }
 
         private void Update()
@@ -172,6 +178,7 @@ namespace Code.Scrips.DrawAndCover
             {
                 Success();
             }
+            Debug.Log(GetCoveragePercentage());
         }
 
         private void UpdateMaskTexture()
@@ -199,6 +206,11 @@ namespace Code.Scrips.DrawAndCover
             }
         }
 
+        private void StopClick()
+        {
+            _audioFader.StartFadeOut();
+        }
+
         // Convert world position to grid coordinate based on plane local space & mesh bounds
         private Vector2Int WorldToGrid(Vector3 worldPosition)
         {
@@ -209,7 +221,7 @@ namespace Code.Scrips.DrawAndCover
             int y = Mathf.FloorToInt((localPos.z - meshMin.z) / cellSize);
             return new Vector2Int(x, y);
         }
-        
+
         private void MarkAtWorldPosition(Vector3 worldPos)
         {
             if (_grid == null)

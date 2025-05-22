@@ -1,4 +1,3 @@
-using Code.ScriptableObjects;
 using Code.ScriptableObjectScripts;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -32,6 +31,10 @@ namespace Code.Scrips
                 Vector3 mousePosition = Input.mousePosition;
                 clickEvent.Raise(mousePosition);
             }
+            if (Input.GetKeyUp(settingsSo.paintInput))
+            {
+                clickEvent.Raise();
+            }
             
             if (Input.GetKeyDown(settingsSo.selectInput))
             {
@@ -49,7 +52,7 @@ namespace Code.Scrips
                     }
                 }
             }
-
+            
 
             if (_isDragging)
             {

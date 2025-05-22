@@ -37,19 +37,19 @@ namespace Code.Scrips.DragAndDrop
 
         private void OutlineSetup()
         {
-            foreach (var draggable in draggableObjects)
+            foreach (var snappable in snappableObjects)
             {
-                var outline = draggable.AddComponent<Outline>();
+                var outline = snappable.AddComponent<Outline>();
                 outline.OutlineColor = outlineColor;
                 outline.OutlineWidth = outlineWidth;
 
                 switch (outlineMode)
                 {
                     case (OutlineMode.ALWAYS):
-                        draggable.AddComponent<OutlineAlways>();
+                        snappable.AddComponent<OutlineAlways>();
                         break;
                     case (OutlineMode.ON_HOVER):
-                        draggable.AddComponent<OutlineOnHover>();
+                        snappable.AddComponent<OutlineOnHover>();
                         break;
                 }
             }
@@ -123,25 +123,25 @@ namespace Code.Scrips.DragAndDrop
             throw new System.NotImplementedException();
         }
 
-        private void OnDestroy()
-        {
-            foreach (var draggable in draggableObjects)
-            {
-                Destroy(_movingAudioSource);
-                Destroy(_putDownAudioSource);
-
-                switch (outlineMode)
-                {
-                    case (OutlineMode.ALWAYS):
-                        Destroy(draggable.GetComponent<OutlineAlways>());
-                        break;
-                    case (OutlineMode.ON_HOVER):
-                        Destroy(draggable.GetComponent<OutlineOnHover>());
-                        break;
-                }
-
-                Destroy(draggable.GetComponent<Outline>());
-            }
-        }
+        // private void OnDestroy()
+        // {
+        //     foreach (var draggable in draggableObjects)
+        //     {
+        //         Destroy(_movingAudioSource);
+        //         Destroy(_putDownAudioSource);
+        //
+        //         switch (outlineMode)
+        //         {
+        //             case (OutlineMode.ALWAYS):
+        //                 Destroy(draggable.GetComponent<OutlineAlways>());
+        //                 break;
+        //             case (OutlineMode.ON_HOVER):
+        //                 Destroy(draggable.GetComponent<OutlineOnHover>());
+        //                 break;
+        //         }
+        //
+        //         Destroy(draggable.GetComponent<Outline>());
+        //     }
+        // }
     }
 }

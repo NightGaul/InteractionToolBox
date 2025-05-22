@@ -2,7 +2,6 @@ using System;
 using Code.ScriptableObjectScripts;
 using Unity.VisualScripting;
 using UnityEngine;
-using Code.ScriptableObjects;
 
 namespace Code.Scrips.ButtonMashing.MashingTypes
 {
