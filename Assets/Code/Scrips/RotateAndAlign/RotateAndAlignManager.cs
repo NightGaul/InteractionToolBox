@@ -57,7 +57,6 @@ namespace Code.Scrips.RotateAndAlign
             if (_puzzleSolved) return;
 
             bool allSolved = true;
-
             foreach (var piece in pieces)
             {
                 if (!piece.isSolved)

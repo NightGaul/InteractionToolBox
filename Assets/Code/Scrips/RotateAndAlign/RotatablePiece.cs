@@ -213,5 +213,12 @@ namespace Code.Scrips.RotateAndAlign
         {
             _rightRotationSound = clip;
         }
+
+        private void OnMouseDown()
+        {
+            Destroy(_clickingSoundSource);
+            Destroy(_rightRotationSource);
+
+        }
     }
 }

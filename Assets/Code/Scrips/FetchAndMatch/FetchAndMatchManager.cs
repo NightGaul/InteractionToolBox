@@ -77,19 +77,24 @@ namespace Code.Scrips.FetchAndMatch
 
         private void Drop()
         {
+            
+            CheckForSuccessfulDrop();
+            
+            _objectBeingHeld.SetParent(_objectGroup, true);
+            _objectBeingHeld = null;
+            _holdingSomething = false;
+            
             _dropAudioSource.PlayOneShot(putDownSound);
+        }
+
+        private void CheckForSuccessfulDrop()
+        {
             if (_isOnGoal && (_possibleSnapObject != null))
             {
                 _objectBeingHeld.transform.position = _possibleSnapObject.position;
                 Success();
             }
-
-            _objectBeingHeld.SetParent(_objectGroup, true);
-            _objectBeingHeld = null;
-            _holdingSomething = false;
         }
-
-
         public bool CheckForGoal(GoalSO objectGoal, GoalSO targetGoal)
         {
             return objectGoal != null && targetGoal != null && objectGoal == targetGoal;

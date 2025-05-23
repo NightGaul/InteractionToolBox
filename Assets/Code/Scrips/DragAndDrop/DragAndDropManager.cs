@@ -120,7 +120,7 @@ namespace Code.Scrips.DragAndDrop
         //TODO: Implement this
         public override void Success()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Success!");
         }
 
         // private void OnDestroy()

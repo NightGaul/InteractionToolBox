@@ -36,7 +36,6 @@ namespace Code.Scrips.FetchAndMatch
         {
             if (other.GetComponent<MatchableObject>()!= null)
             {
-                Debug.Log("Im triggred");
                 var goalContainer = other.GetComponent<MatchableObject>();
                 if (goalContainer != null && manager.CheckForGoal(goalContainer.goal, goal))
                 {
