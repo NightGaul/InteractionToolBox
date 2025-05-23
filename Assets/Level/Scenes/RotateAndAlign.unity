@@ -425,21 +425,26 @@ MonoBehaviour:
   pieces:
   - {fileID: 1570529629}
   - {fileID: 953336410}
-  - {fileID: 859845961}
+  - {fileID: 1233894060}
   - {fileID: 201749666}
   - {fileID: 2086142426}
   - {fileID: 1540874123}
   - {fileID: 1964523282}
-  - {fileID: 600472714}
+  - {fileID: 600472716}
   rotationAngleDivisorOf360: 90
   rotationAxis: 0
   useAutoScramble: 1
   scrollEvent: {fileID: 11400000, guid: e0e366e1d53d5e4418aea49615308ca4, type: 2}
-  outlineMode: 1
+  outlineMode: 0
   outlineColor: {r: 0.061807156, g: 0, b: 1, a: 0.92941177}
   outlineWidth: 4.1
   clickSound: {fileID: 8300000, guid: bac222c2515819f4bbce2a704abe7541, type: 3}
   rightRotateSound: {fileID: 8300000, guid: dedbddfea5fa46a4a8351aade6c254a0, type: 3}
+--- !u!1 &450035788 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3828846876288801734, guid: 1c6865324f95c004293d5d1efe86d559, type: 3}
+  m_PrefabInstance: {fileID: 600472711}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &600472711
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -451,6 +456,18 @@ PrefabInstance:
     - target: {fileID: 3828846876288801734, guid: 1c6865324f95c004293d5d1efe86d559, type: 3}
       propertyPath: m_Name
       value: Fish
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497155794289983868, guid: 1c6865324f95c004293d5d1efe86d559, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497155794289983868, guid: 1c6865324f95c004293d5d1efe86d559, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497155794289983868, guid: 1c6865324f95c004293d5d1efe86d559, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4497155794289983868, guid: 1c6865324f95c004293d5d1efe86d559, type: 3}
       propertyPath: m_LocalPosition.x
@@ -495,24 +512,30 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3828846876288801734, guid: 1c6865324f95c004293d5d1efe86d559, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 600472716}
   m_SourcePrefab: {fileID: 100100000, guid: 1c6865324f95c004293d5d1efe86d559, type: 3}
 --- !u!4 &600472712 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4497155794289983868, guid: 1c6865324f95c004293d5d1efe86d559, type: 3}
   m_PrefabInstance: {fileID: 600472711}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &600472714 stripped
+--- !u!114 &600472716
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4794232282960824679, guid: 1c6865324f95c004293d5d1efe86d559, type: 3}
-  m_PrefabInstance: {fileID: 600472711}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 450035788}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5204204edfca15c43b560390f325b24c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetAngle: 0
+  isSolved: 0
 --- !u!1001 &859845958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -524,6 +547,18 @@ PrefabInstance:
     - target: {fileID: 388876489497171537, guid: d0ddd93953187fd4195f9cea4a7b8a56, type: 3}
       propertyPath: m_Name
       value: Apple
+      objectReference: {fileID: 0}
+    - target: {fileID: 1021826422970944747, guid: d0ddd93953187fd4195f9cea4a7b8a56, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1021826422970944747, guid: d0ddd93953187fd4195f9cea4a7b8a56, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1021826422970944747, guid: d0ddd93953187fd4195f9cea4a7b8a56, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1021826422970944747, guid: d0ddd93953187fd4195f9cea4a7b8a56, type: 3}
       propertyPath: m_LocalPosition.x
@@ -568,24 +603,16 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 388876489497171537, guid: d0ddd93953187fd4195f9cea4a7b8a56, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1233894060}
   m_SourcePrefab: {fileID: 100100000, guid: d0ddd93953187fd4195f9cea4a7b8a56, type: 3}
 --- !u!4 &859845959 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1021826422970944747, guid: d0ddd93953187fd4195f9cea4a7b8a56, type: 3}
   m_PrefabInstance: {fileID: 859845958}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &859845961 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8962494174159922236, guid: d0ddd93953187fd4195f9cea4a7b8a56, type: 3}
-  m_PrefabInstance: {fileID: 859845958}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5204204edfca15c43b560390f325b24c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &931067496
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,6 +846,25 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &1233894056 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 388876489497171537, guid: d0ddd93953187fd4195f9cea4a7b8a56, type: 3}
+  m_PrefabInstance: {fileID: 859845958}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1233894060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1233894056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5204204edfca15c43b560390f325b24c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetAngle: 0
+  isSolved: 0
 --- !u!1001 &1540874120
 PrefabInstance:
   m_ObjectHideFlags: 0

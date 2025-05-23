@@ -7,7 +7,7 @@ namespace Code.Scrips.DrawAndCover
         private int _width;
         private int _height;
         private bool[,] _gridCoverage;
-        public BrushShape brushshape;
+        public BrushShape brushShape;
 
         public CoverageGrid(int w, int h)
         {
@@ -18,7 +18,7 @@ namespace Code.Scrips.DrawAndCover
 
         public void MarkCoverage(int x, int y, int radius)
         {
-            switch (brushshape)
+            switch (brushShape)
             {
                 case BrushShape.DIAMOND:
                     for (int dx = -radius; dx <= radius; dx++)

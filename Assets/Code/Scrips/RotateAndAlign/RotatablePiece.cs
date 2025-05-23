@@ -46,22 +46,8 @@ namespace Code.Scrips.RotateAndAlign
 
         private void OutlineSetup()
         {
-            if (gameObject.GetComponent<Outline>() == null)
-            {
-                var outline = this.AddComponent<Outline>();
-                outline.OutlineColor = _outlineColor;
-                outline.OutlineWidth = _outlineWidth;
-
-                switch (_outlineMode)
-                {
-                    case (OutlineMode.ALWAYS):
-                        this.AddComponent<OutlineAlways>();
-                        break;
-                    case (OutlineMode.ON_HOVER):
-                        this.AddComponent<OutlineOnHover>();
-                        break;
-                }
-            }
+            VisualSetupHelper.AddOutlineComponents(gameObject.transform, _outlineMode, _outlineColor, _outlineWidth);
+            
         }
 
         private void AudioSetup()

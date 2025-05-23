@@ -1,4 +1,4 @@
-namespace Code.Scrips.ButtonMashing
+namespace Code.Scrips.ButtonMashing.MashingEffects
 {
     public enum VisualEffect
     {

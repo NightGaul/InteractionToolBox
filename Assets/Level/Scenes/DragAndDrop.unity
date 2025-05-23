@@ -264,9 +264,7 @@ MonoBehaviour:
   - {fileID: 1204752304}
   - {fileID: 2136933140}
   - {fileID: 854335515}
-  draggableObjects:
-  - {fileID: 108671380}
-  outlineMode: 1
+  outlineMode: 0
   outlineColor: {r: 1, g: 0.023584902, b: 0.023584902, a: 1}
   outlineWidth: 10
   putDownSound: {fileID: 8300000, guid: dedbddfea5fa46a4a8351aade6c254a0, type: 3}

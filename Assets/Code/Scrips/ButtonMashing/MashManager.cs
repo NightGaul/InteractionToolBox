@@ -1,6 +1,7 @@
 using Code.Scrips.Abstractions;
 using Code.Scrips.ButtonMashing.MashingEffects;
 using Code.Scrips.ButtonMashing.MashingTypes;
+using Editors;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,20 +10,28 @@ namespace Code.Scrips.ButtonMashing
     public class MashManager : ManagerBase
     {
         [Header("Mashing Settings")] public MashingType mashingType;
+        [ShowIfEnum("mashingType", MashingType.TIMED)]
+        public float mashingDuration;
         public int requiredMashingAmount;
         [Header("Visuals")] public VisualEffect mashVisualEffect;
+        [ShowIfEnum("mashVisualEffect", VisualEffect.SCREEN_SHAKE, VisualEffect.ZOOM)]
+        [Range(0f, 1f)] 
+        public float startIntensity;
+
+        [ShowIfEnum("mashVisualEffect", VisualEffect.SCREEN_SHAKE, VisualEffect.ZOOM)]
+        [Range(0f, 1f)] 
+        public float endIntensity;
+        
+        
+        private MashingEffectBase _currentEffectType;
+        private MashingTypeBase _currentMashingType;
         [Header("Sounds")] public AudioClip mashSound;
         public AudioClip finishSound;
         private AudioSource _audioSourceFinish;
-
+        
         private bool _alreadyWon;
 
-        [Header("Mash-Effect Intensity")] [Range(0f, 1f)]
-        public float startIntensity;
-
-        [Range(0f, 1f)] public float endIntensity;
-        private MashingEffectBase _currentEffectType;
-        private MashingTypeBase _currentMashingType;
+        
 
         private void Start()
         {
@@ -71,9 +80,9 @@ namespace Code.Scrips.ButtonMashing
 
         private void AudioSetup()
         {
-            _currentMashingType.SetMashingSound(mashSound);
             _audioSourceFinish = this.AddComponent<AudioSource>();
             _audioSourceFinish.clip = finishSound;
+            _currentMashingType.SetMashingSound(mashSound);
         }
 
         private void MashingTypeSetup()
@@ -86,6 +95,13 @@ namespace Code.Scrips.ButtonMashing
                 case MashingType.ALTERNATE_BUTTON:
                     _currentMashingType = this.AddComponent<AlternateButtonMashing>();
                     break;
+                case MashingType.TIMED:
+                    _currentMashingType = this.AddComponent<TimedButtonMashing>();
+                    if (_currentMashingType is TimedButtonMashing timedMashing)
+                    {
+                        timedMashing.SetMashingDuration(mashingDuration); // 5 seconds duration
+                    }
+                    break;
                 default:
                     _currentMashingType = this.AddComponent<SingleButtonMashing>();
                     break;
@@ -95,8 +111,8 @@ namespace Code.Scrips.ButtonMashing
 
         private void OnDestroy()
         {
-            Destroy(_currentEffectType.gameObject);
-            Destroy(_currentMashingType.gameObject);
+            if (_currentEffectType) Destroy(_currentEffectType.gameObject);
+            if(_currentMashingType)Destroy(_currentMashingType.gameObject);
             Destroy(_audioSourceFinish);
         }
 

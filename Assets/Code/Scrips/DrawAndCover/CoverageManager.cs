@@ -3,6 +3,7 @@ using Code.Scrips.Abstractions;
 using Code.Scrips.AudioHelpers;
 using Code.Scrips.UI;
 using Code.ScriptableObjectScripts;
+using Editors;
 using UnityEngine;
 
 namespace Code.Scrips.DrawAndCover
@@ -29,6 +30,7 @@ namespace Code.Scrips.DrawAndCover
         private CoverageGrid _grid;
 
         [Header("Sounds")] public AudioClip drawingSound;
+        private AudioSource _finishingSource;
         public AudioClip finishingSound;
         private AudioSource _camAudioSource;
         private AudioFader _audioFader;
@@ -36,29 +38,44 @@ namespace Code.Scrips.DrawAndCover
         [Header("Drawing Settings")] public float successPercentage = 95f;
         [Space] public BrushShape brushShape;
         public int brushRadius;
-        public Sprite cursorSprite;
         public bool useCustomCursor;
+        [ShowIfBool("useCustomCursor")]
+        public Sprite cursorSprite;
 
         private bool _finished;
         private Camera _cam;
 
         private void Start()
         {
+            _cam = Camera.main;
+            
             if (!ValidatePlane()) return;
 
             CalculateGridDimensions();
+            
             if (!ValidateGridSize()) return;
 
-            InitializeGrid();
+            GridSetup();
             CreateMaskTexture();
             ApplyMaterialTextures();
             AssignMaterialToPlane();
 
-            SetupCameraAndAudio();
+            AudioSetup();
 
             if (useCustomCursor) CustomCursor.instance.SetCursor(cursorSprite);
         }
+        
+        private void Update()
+        {
+            //For further development consider dirty-flag
+            UpdateMaskTexture();
 
+            if (!_finished && GetCoveragePercentage() > successPercentage)
+            {
+                Success();
+            }
+            Debug.Log(GetCoveragePercentage());
+        }
         private bool ValidatePlane()
         {
             if (plane == null)
@@ -102,11 +119,11 @@ namespace Code.Scrips.DrawAndCover
             return true;
         }
 
-        private void InitializeGrid()
+        private void GridSetup()
         {
             _grid = new CoverageGrid(_gridWidth, _gridHeight)
             {
-                brushshape = brushShape
+                brushShape = brushShape
             };
         }
 
@@ -148,9 +165,8 @@ namespace Code.Scrips.DrawAndCover
             planeRenderer.material = coverageMaterial;
         }
 
-        private void SetupCameraAndAudio()
+        private void AudioSetup()
         {
-            _cam = Camera.main;
             if (_cam != null) _camAudioSource = _cam.gameObject.AddComponent<AudioSource>();
             _audioFader = gameObject.AddComponent<AudioFader>();
             _audioFader.SetAudioSource(_camAudioSource);
@@ -170,16 +186,6 @@ namespace Code.Scrips.DrawAndCover
             clickEvent.onInputStop -= StopClick;
         }
 
-        private void Update()
-        {
-            UpdateMaskTexture();
-
-            if (!_finished && GetCoveragePercentage() > successPercentage)
-            {
-                Success();
-            }
-            Debug.Log(GetCoveragePercentage());
-        }
 
         private void UpdateMaskTexture()
         {
@@ -250,14 +256,15 @@ namespace Code.Scrips.DrawAndCover
         public override void Success()
         {
             _finished = true;
-            var finishingSource = _cam.gameObject.AddComponent<AudioSource>();
-            finishingSource.clip = finishingSound;
-            finishingSource.Play();
+            _finishingSource = _cam.gameObject.AddComponent<AudioSource>();
+            _finishingSource.clip = finishingSound;
+            _finishingSource.Play();
         }
 
         private void OnDestroy()
         {
             Destroy(_camAudioSource);
+            Destroy(_finishingSource);
         }
     }
 }

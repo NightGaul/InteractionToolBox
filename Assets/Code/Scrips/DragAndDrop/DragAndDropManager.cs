@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using Code.Scrips.Abstractions;
 using Code.Scrips.VisualHelpers;
 using Code.ScriptableObjectScripts;
+using Editors;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,14 +14,15 @@ namespace Code.Scrips.DragAndDrop
         [Header("Drag and Drop Settings")] public DragEventSO dragEvent;
         public float snapRadius = 2.0f; // Max distance for snapping
         public Transform[] snappableObjects;
-        public GameObject[] draggableObjects;
-
+        private Dictionary<Transform, GameObject> _occupiedSnapPoints = new Dictionary<Transform, GameObject>();
+        
         private Vector3 _originPosition;
-
-
+        
         [Header("Visuals")] public OutlineMode outlineMode;
+        [ShowIfEnum("outlineMode", OutlineMode.ON_HOVER, OutlineMode.ALWAYS)]
         public Color outlineColor = Color.white;
-
+        
+        [ShowIfEnum("outlineMode", OutlineMode.ON_HOVER, OutlineMode.ALWAYS)]
         [Range(0.1f, 50f)] public float outlineWidth = 2f;
 
         [Header("Sounds")] public AudioClip putDownSound;
@@ -39,19 +42,7 @@ namespace Code.Scrips.DragAndDrop
         {
             foreach (var snappable in snappableObjects)
             {
-                var outline = snappable.AddComponent<Outline>();
-                outline.OutlineColor = outlineColor;
-                outline.OutlineWidth = outlineWidth;
-
-                switch (outlineMode)
-                {
-                    case (OutlineMode.ALWAYS):
-                        snappable.AddComponent<OutlineAlways>();
-                        break;
-                    case (OutlineMode.ON_HOVER):
-                        snappable.AddComponent<OutlineOnHover>();
-                        break;
-                }
+                VisualSetupHelper.AddOutlineComponents(snappable, outlineMode, outlineColor, outlineWidth);
             }
         }
 
@@ -59,9 +50,7 @@ namespace Code.Scrips.DragAndDrop
         {
             _cam = Camera.main;
             _putDownAudioSource = _cam.AddComponent<AudioSource>();
-            _putDownAudioSource.playOnAwake = false;
             _movingAudioSource = _cam.AddComponent<AudioSource>();
-            _movingAudioSource.playOnAwake = false;
             _movingAudioSource.clip = movingSound;
         }
 
@@ -82,6 +71,13 @@ namespace Code.Scrips.DragAndDrop
         private void HandleDragStart(GameObject obj)
         {
             _originPosition = obj.transform.position;
+
+            // Unoccupy the snap point if the object is currently on one
+            var occupied = _occupiedSnapPoints.FirstOrDefault(kvp => kvp.Value == obj);
+            if (occupied.Key != null)
+            {
+                _occupiedSnapPoints.Remove(occupied.Key);
+            }
         }
 
         private void HandleDragUpdate(GameObject obj, Vector3 position)
@@ -98,9 +94,12 @@ namespace Code.Scrips.DragAndDrop
         {
             Transform nearestPoint = GetNearestSnapPoint(obj.transform.position);
 
-            if (nearestPoint != null && (Vector3.Distance(nearestPoint.position, obj.transform.position) < snapRadius))
+            if (nearestPoint != null &&
+                Vector3.Distance(nearestPoint.position, obj.transform.position) < snapRadius &&
+                !_occupiedSnapPoints.ContainsKey(nearestPoint))
             {
                 obj.transform.position = nearestPoint.position;
+                _occupiedSnapPoints[nearestPoint] = obj; // Mark as occupied
                 _putDownAudioSource.PlayOneShot(putDownSound);
             }
             else
@@ -117,31 +116,18 @@ namespace Code.Scrips.DragAndDrop
         }
 
 
-        //TODO: Implement this
         public override void Success()
         {
             Debug.Log("Success!");
         }
 
-        // private void OnDestroy()
-        // {
-        //     foreach (var draggable in draggableObjects)
-        //     {
-        //         Destroy(_movingAudioSource);
-        //         Destroy(_putDownAudioSource);
-        //
-        //         switch (outlineMode)
-        //         {
-        //             case (OutlineMode.ALWAYS):
-        //                 Destroy(draggable.GetComponent<OutlineAlways>());
-        //                 break;
-        //             case (OutlineMode.ON_HOVER):
-        //                 Destroy(draggable.GetComponent<OutlineOnHover>());
-        //                 break;
-        //         }
-        //
-        //         Destroy(draggable.GetComponent<Outline>());
-        //     }
-        // }
+        private void OnDestroy()
+        {
+            foreach (var snappable in snappableObjects)
+            {
+                Destroy(_movingAudioSource);
+                Destroy(_putDownAudioSource);
+            }
+        }
     }
 }

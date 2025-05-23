@@ -17,21 +17,14 @@ namespace Code.Scrips.FetchAndMatch
         {
             _collider = GetComponent<Collider>();
             _collider.isTrigger = true;
-
-            var outline = gameObject.AddComponent<Outline>();
-            outline.OutlineColor = manager.outlineColor;
-            outline.OutlineWidth = manager.outlineWidth;
-            switch (manager.outlineMode)
-            {
-                case (OutlineMode.ALWAYS):
-                    gameObject.AddComponent<OutlineAlways>();
-                    break;
-                case (OutlineMode.ON_HOVER):
-                    gameObject.AddComponent<OutlineOnHover3D>();
-                    break;
-            }
+            
+            OutlineSetup();
         }
-
+        
+        private void OutlineSetup()
+        {
+            VisualSetupHelper.AddOutlineComponents(gameObject.transform, manager.outlineMode, manager.outlineColor, manager.outlineWidth);
+        }
         private void OnTriggerEnter(Collider other)
         {
             if (other.GetComponent<MatchableObject>()!= null)

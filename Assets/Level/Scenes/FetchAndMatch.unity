@@ -534,7 +534,7 @@ MonoBehaviour:
   dragEvent: {fileID: 0}
   interactEvent: {fileID: 11400000, guid: 0310d9b1aa12fa84bb74c51b888ed6d5, type: 2}
   scrollEvent: {fileID: 0}
-  settings: {fileID: 11400000, guid: 2a4d2e0f83516ad479971bc143c38550, type: 2}
+  settingsSo: {fileID: 11400000, guid: 2a4d2e0f83516ad479971bc143c38550, type: 2}
 --- !u!4 &476334750
 Transform:
   m_ObjectHideFlags: 0
@@ -941,7 +941,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactEvent: {fileID: 11400000, guid: 0310d9b1aa12fa84bb74c51b888ed6d5, type: 2}
   handTransform: {fileID: 717868523}
-  outlineMode: 1
+  outlineMode: 0
   outlineColor: {r: 1, g: 0.0047169924, b: 0.0047169924, a: 1}
   outlineWidth: 9.4
   putDownSound: {fileID: 8300000, guid: bac222c2515819f4bbce2a704abe7541, type: 3}

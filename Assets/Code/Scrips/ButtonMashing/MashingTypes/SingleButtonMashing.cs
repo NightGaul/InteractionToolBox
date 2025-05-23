@@ -24,7 +24,7 @@ namespace Code.Scrips.ButtonMashing.MashingTypes
 
         public override int HandleMashing()
         {
-            //this is only update based because i cant think of a good way rn
+            //this is only update based because I cant think of a good way rn
             if (Input.GetKeyDown(_buttonToPress)) 
             {
                 _buttonPressCount++;

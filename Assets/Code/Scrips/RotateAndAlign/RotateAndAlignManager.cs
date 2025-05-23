@@ -1,6 +1,7 @@
 using Code.Scrips.Abstractions;
 using Code.Scrips.VisualHelpers;
 using Code.ScriptableObjectScripts;
+using Editors;
 using UnityEngine;
 
 namespace Code.Scrips.RotateAndAlign
@@ -19,8 +20,11 @@ namespace Code.Scrips.RotateAndAlign
 
 
         [Header("Visuals")] public OutlineMode outlineMode;
-        public Color outlineColor;
-        [Range(0.1f, 50f)] public float outlineWidth;
+        [ShowIfEnum("outlineMode", OutlineMode.ON_HOVER, OutlineMode.ALWAYS)]
+        public Color outlineColor = Color.white;
+        
+        [ShowIfEnum("outlineMode", OutlineMode.ON_HOVER, OutlineMode.ALWAYS)]
+        [Range(0.1f, 50f)] public float outlineWidth = 2f;
 
         [Header("Sounds")] public AudioClip clickSound;
         public AudioClip rightRotateSound;
@@ -45,9 +49,9 @@ namespace Code.Scrips.RotateAndAlign
                 piece.SetOutline(outlineMode, outlineColor, outlineWidth);
                 piece.SetRotationAxis(rotationAxis);
                 piece.SetTargetAngle();
-                if (useAutoScramble) piece.AutoScramble();
                 piece.SetClickingClip(clickSound);
                 piece.SetRightRotationClip(rightRotateSound);
+                if (useAutoScramble) piece.AutoScramble();
             }
         }
 

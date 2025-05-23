@@ -2,6 +2,7 @@ using System;
 using Code.Scrips.Abstractions;
 using Code.Scrips.VisualHelpers;
 using Code.ScriptableObjectScripts;
+using Editors;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,9 +15,11 @@ namespace Code.Scrips.FetchAndMatch
         public Transform handTransform;
 
         [Header("Visuals")] public OutlineMode outlineMode;
+        [ShowIfEnum("outlineMode", OutlineMode.ON_HOVER, OutlineMode.ALWAYS)]
         public Color outlineColor = Color.white;
-        [Range(0.1f, 50f)]
-        public float outlineWidth = 2f;
+        
+        [ShowIfEnum("outlineMode", OutlineMode.ON_HOVER, OutlineMode.ALWAYS)]
+        [Range(0.1f, 50f)] public float outlineWidth = 2f;
 
         [Header("Sounds")] public AudioClip putDownSound;
         public AudioClip successSound;
@@ -39,7 +42,6 @@ namespace Code.Scrips.FetchAndMatch
         {
             _dropAudioSource = handTransform.AddComponent<AudioSource>();
             _successAudioSource = handTransform.AddComponent<AudioSource>();
-            _successAudioSource.clip = successSound;
         }
         private void OnEnable()
         {
@@ -102,7 +104,7 @@ namespace Code.Scrips.FetchAndMatch
 
         public override void Success()
         {
-            _successAudioSource.Play();
+            _successAudioSource.PlayOneShot(successSound);
             Debug.Log("success");
         }
 
