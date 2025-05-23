@@ -1,3 +1,5 @@
+using Code.Scrips.FetchAndMatch;
+using Code.Scrips.RotateAndAlign;
 using Code.ScriptableObjectScripts;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -79,7 +81,7 @@ namespace Code.Scrips
                     Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
                     if (Physics.Raycast(ray, out RaycastHit hit))
                     {
-                        if (hit.collider.CompareTag("Interactable"))
+                        if (hit.collider.GetComponent<MatchableObject>()!=null)
                         {
                             interactEvent.Raise(hit, true);
                         }
@@ -99,7 +101,7 @@ namespace Code.Scrips
                 Ray ray = _camera.ScreenPointToRay(mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    if (hit.collider.CompareTag("Scrollable"))
+                    if (hit.collider.GetComponent<RotatablePiece>()!= null)
                     {
                         scrollEvent.Raise(Input.mouseScrollDelta.y);
                     }

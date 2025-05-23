@@ -13,6 +13,7 @@ namespace Code.Scrips.RotateAndAlign
         //yes this is a bit clunky but limits the ability to create buggy puzzles
         public DivisorOf360 rotationAngleDivisorOf360 = DivisorOf360.ONE;
         public RotationAxis rotationAxis;
+        [Tooltip("It's recommended to set this to true!")]
         public bool useAutoScramble;
         [Space] public ScrollEventSO scrollEvent;
 
@@ -78,7 +79,7 @@ namespace Code.Scrips.RotateAndAlign
             Debug.Log("Puzzle Solved!");
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             foreach (var piece in pieces)
             {

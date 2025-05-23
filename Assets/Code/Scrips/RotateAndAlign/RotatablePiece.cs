@@ -40,27 +40,34 @@ namespace Code.Scrips.RotateAndAlign
 
         private void Start()
         {
-            _scrollEvent.onScroll += Scroll;
+            OutlineSetup();
+            AudioSetup();
+        }
 
-            var outline = this.AddComponent<Outline>();
-            outline.OutlineColor = _outlineColor;
-            outline.OutlineWidth = _outlineWidth;
-
-            switch (_outlineMode)
+        private void OutlineSetup()
+        {
+            if (gameObject.GetComponent<Outline>() == null)
             {
-                case (OutlineMode.ALWAYS):
-                    this.AddComponent<OutlineAlways>();
-                    break;
-                case (OutlineMode.ON_HOVER):
-                    this.AddComponent<OutlineOnHover>();
-                    break;
-            }
+                var outline = this.AddComponent<Outline>();
+                outline.OutlineColor = _outlineColor;
+                outline.OutlineWidth = _outlineWidth;
 
-            //difficulties with fast spinning
+                switch (_outlineMode)
+                {
+                    case (OutlineMode.ALWAYS):
+                        this.AddComponent<OutlineAlways>();
+                        break;
+                    case (OutlineMode.ON_HOVER):
+                        this.AddComponent<OutlineOnHover>();
+                        break;
+                }
+            }
+        }
+
+        private void AudioSetup()
+        {
             _clickingSoundSource = this.AddComponent<AudioSource>();
-            _clickingSoundSource.clip = _clickingSound;
             _rightRotationSource = this.AddComponent<AudioSource>();
-            _rightRotationSource.clip = _rightRotationSound;
         }
 
         public void SetTargetAngle()
@@ -80,6 +87,11 @@ namespace Code.Scrips.RotateAndAlign
                     targetAngle = transform.localRotation.x;
                     break;
             }
+        }
+
+        private void OnEnable()
+        {
+            _scrollEvent.onScroll += Scroll;
         }
 
         private void OnDisable()
@@ -103,7 +115,7 @@ namespace Code.Scrips.RotateAndAlign
                     break;
             }
 
-            _clickingSoundSource.Play();
+            _clickingSoundSource.PlayOneShot(_clickingSound);
             CheckSolved();
         }
 
@@ -146,7 +158,7 @@ namespace Code.Scrips.RotateAndAlign
             }
 
             isSolved = (Mathf.Abs(Math.Abs(currentAngle) - Math.Abs(targetAngle)) < _TOLERANCE);
-            if (isSolved) _rightRotationSource.Play();
+            if (isSolved) _rightRotationSource.PlayOneShot(_rightRotationSound);
         }
 
 

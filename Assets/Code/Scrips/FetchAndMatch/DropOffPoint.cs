@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Code.Scrips.FetchAndMatch
 {
     [RequireComponent(typeof(Collider))]
+    [RequireComponent(typeof(Rigidbody))]
     public class DropOffPoint : AbstractInteraction
     {
         private Collider _collider;
@@ -33,14 +34,16 @@ namespace Code.Scrips.FetchAndMatch
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Interactable"))
+            if (other.GetComponent<MatchableObject>()!= null)
             {
+                Debug.Log("Im triggred");
                 var goalContainer = other.GetComponent<MatchableObject>();
                 if (goalContainer != null && manager.CheckForGoal(goalContainer.goal, goal))
                 {
                     manager.SetIsOnGoal(true);
                     manager.SetPossibleSnapObject(transform);
                 }
+                
             }
         }
 
