@@ -379,7 +379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mashingType: 2
-  mashingDuration: 0
+  mashingDuration: 5
   requiredMashingAmount: 10
   mashVisualEffect: 0
   startIntensity: 0

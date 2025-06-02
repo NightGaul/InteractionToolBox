@@ -1,4 +1,3 @@
-using System;
 using Code.Scrips.Abstractions;
 using Code.Scrips.VisualHelpers;
 using Code.ScriptableObjectScripts;
@@ -12,7 +11,9 @@ namespace Code.Scrips.FetchAndMatch
     {
         [Header("FetchAndMatch Settings")]
         public InteractEventSO interactEvent;
-        public Transform handTransform;
+        [Space]
+        [Tooltip("Gameobject that is used for the position while carrying")]
+        public Transform playerTransform;
 
         [Header("Visuals")] public OutlineMode outlineMode;
         [ShowIfEnum("outlineMode", OutlineMode.ON_HOVER, OutlineMode.ALWAYS)]
@@ -38,21 +39,25 @@ namespace Code.Scrips.FetchAndMatch
             AudioSetup();
         }
 
+        // Adds audio sources to the playerTransform for handling in-game audio feedback.
         private void AudioSetup()
         {
-            _dropAudioSource = handTransform.AddComponent<AudioSource>();
-            _successAudioSource = handTransform.AddComponent<AudioSource>();
+            _dropAudioSource = playerTransform.AddComponent<AudioSource>();
+            _successAudioSource = playerTransform.AddComponent<AudioSource>();
         }
+        // Subscribes to interaction events when the script is enabled.
         private void OnEnable()
         {
             interactEvent.onInteract += HandleInteract;
         }
 
+        // Unsubscribes from interaction events to avoid dangling references.
         private void OnDisable()
         {
             interactEvent.onInteract -= HandleInteract;
         }
 
+        // Handles interaction input: either grabs an interactable object or drops the held one.
         private void HandleInteract(RaycastHit objHit, bool isInteractable)
         {
             var obj = objHit.transform;
@@ -67,16 +72,18 @@ namespace Code.Scrips.FetchAndMatch
         }
 
 
+        // Attaches the interactable object to the player, marking it as held.
         private void Grab(Transform objectToGrab)
         {
             _dropAudioSource.PlayOneShot(putDownSound);
             _objectGroup = objectToGrab.parent;
-            objectToGrab.SetParent(handTransform, false);
+            objectToGrab.SetParent(playerTransform, false);
             objectToGrab.transform.localPosition = Vector3.zero;
             _objectBeingHeld = objectToGrab;
             _holdingSomething = true;
         }
 
+        // Drops the currently held object, checks for goal alignment, and repositions it.
         private void Drop()
         {
             
@@ -89,6 +96,7 @@ namespace Code.Scrips.FetchAndMatch
             _dropAudioSource.PlayOneShot(putDownSound);
         }
 
+        // Checks if the object is dropped onto the correct goal and triggers success logic if true.
         private void CheckForSuccessfulDrop()
         {
             if (_isOnGoal && (_possibleSnapObject != null))
@@ -97,27 +105,32 @@ namespace Code.Scrips.FetchAndMatch
                 Success();
             }
         }
+        // Compares two GoalSO references to determine if they match.
         public bool CheckForGoal(GoalSO objectGoal, GoalSO targetGoal)
         {
             return objectGoal != null && targetGoal != null && objectGoal == targetGoal;
         }
 
+        // Plays success sound and logs a success message.
         public override void Success()
         {
             _successAudioSource.PlayOneShot(successSound);
             Debug.Log("success");
         }
 
+        // Updates the internal flag indicating if the object is over a valid goal zone.
         public void SetIsOnGoal(bool isOnGoal)
         {
             _isOnGoal = isOnGoal;
         }
 
+        // Sets the target position to snap the object to if dropped successfully.
         public void SetPossibleSnapObject(Transform possibleSnapObject)
         {
             _possibleSnapObject = possibleSnapObject;
         }
 
+        // Cleans up audio sources to prevent memory leaks or dangling components.
         private void OnDestroy()
         {
             Destroy(_dropAudioSource);

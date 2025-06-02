@@ -379,13 +379,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71355bbdfd514b53807d047c23a6677f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mashingType: 0
+  mashingType: 2
+  mashingDuration: 0
   requiredMashingAmount: 10
   mashVisualEffect: 0
-  mashSound: {fileID: 8300000, guid: bac222c2515819f4bbce2a704abe7541, type: 3}
-  finishSound: {fileID: 8300000, guid: dedbddfea5fa46a4a8351aade6c254a0, type: 3}
   startIntensity: 0
   endIntensity: 0
+  mashSound: {fileID: 8300000, guid: bac222c2515819f4bbce2a704abe7541, type: 3}
+  finishSound: {fileID: 8300000, guid: dedbddfea5fa46a4a8351aade6c254a0, type: 3}
 --- !u!4 &1272894071
 Transform:
   m_ObjectHideFlags: 0

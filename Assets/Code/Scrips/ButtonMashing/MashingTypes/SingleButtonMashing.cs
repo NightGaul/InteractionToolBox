@@ -24,7 +24,6 @@ namespace Code.Scrips.ButtonMashing.MashingTypes
 
         public override int HandleMashing()
         {
-            //this is only update based because I cant think of a good way rn
             if (Input.GetKeyDown(_buttonToPress)) 
             {
                 _buttonPressCount++;
@@ -39,7 +38,5 @@ namespace Code.Scrips.ButtonMashing.MashingTypes
             _audioSourceMash = this.AddComponent<AudioSource>();
             _mashSound = mashingSound;
         }
-
-        
     }
 }

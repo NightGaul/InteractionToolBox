@@ -1,4 +1,3 @@
-using System;
 using Code.Scrips.Abstractions;
 using Code.Scrips.AudioHelpers;
 using Code.Scrips.UI;
@@ -14,11 +13,22 @@ namespace Code.Scrips.DrawAndCover
         private static readonly int _revealTex = Shader.PropertyToID("_RevealTex");
         private static readonly int _baseTex = Shader.PropertyToID("_BaseTex");
 
-        [Header("Grid Settings")] public float cellSize = 10f; // size of each grid cell (world units)
+        [Header("Draw and Cover Settings")] public RightClickEventSO clickEvent;
+
+        [Space] [Tooltip("Size of pixels in grid")]
+        public float cellSize = 10f;
+
+        [Tooltip("Percent of coverage that is needed to trigger success")]
+        public float successPercentage = 95f;
+
         private int _gridWidth;
         private int _gridHeight;
 
-        [Header("Events")] public RightClickEventSO clickEvent;
+
+        [Header("Brush Settings")]public BrushShape brushShape;
+        public int brushSize = 1;
+        public bool useCustomCursor;
+        [ShowIfBool("useCustomCursor")] public Sprite cursorSprite;
 
         [Header("Visuals")] public Texture2D baseTexture;
         public Texture2D revealTexture;
@@ -35,24 +45,17 @@ namespace Code.Scrips.DrawAndCover
         private AudioSource _camAudioSource;
         private AudioFader _audioFader;
 
-        [Header("Drawing Settings")] public float successPercentage = 95f;
-        [Space] public BrushShape brushShape;
-        public int brushRadius;
-        public bool useCustomCursor;
-        [ShowIfBool("useCustomCursor")]
-        public Sprite cursorSprite;
-
         private bool _finished;
         private Camera _cam;
 
         private void Start()
         {
             _cam = Camera.main;
-            
+
             if (!ValidatePlane()) return;
 
             CalculateGridDimensions();
-            
+
             if (!ValidateGridSize()) return;
 
             GridSetup();
@@ -64,7 +67,7 @@ namespace Code.Scrips.DrawAndCover
 
             if (useCustomCursor) CustomCursor.instance.SetCursor(cursorSprite);
         }
-        
+
         private void Update()
         {
             //For further development consider dirty-flag
@@ -74,8 +77,25 @@ namespace Code.Scrips.DrawAndCover
             {
                 Success();
             }
+
             Debug.Log(GetCoveragePercentage());
         }
+
+        // Subscribes to right-click input events to handle drawing.
+        private void OnEnable()
+        {
+            clickEvent.onInputReceived += HandleClick;
+            clickEvent.onInputStop += StopClick;
+        }
+
+        // Unsubscribes from input events to avoid memory leaks or null references.
+        private void OnDisable()
+        {
+            clickEvent.onInputReceived -= HandleClick;
+            clickEvent.onInputStop -= StopClick;
+        }
+
+        // Verifies the plane GameObject and mesh are properly assigned and usable.
         private bool ValidatePlane()
         {
             if (plane == null)
@@ -94,6 +114,7 @@ namespace Code.Scrips.DrawAndCover
             return true;
         }
 
+        // Calculates the number of grid cells based on the plane's size and configured cell size.
         private void CalculateGridDimensions()
         {
             Bounds meshBounds = _meshFilter.sharedMesh.bounds;
@@ -103,10 +124,9 @@ namespace Code.Scrips.DrawAndCover
 
             _gridWidth = Mathf.FloorToInt(planeSize.x / cellSize);
             _gridHeight = Mathf.FloorToInt(planeSize.z / cellSize);
-
-            // Debug.Log($"Grid Width: {_gridWidth}, Grid Height: {_gridHeight}");
         }
 
+        // Checks if the calculated grid dimensions are valid (greater than zero).
         private bool ValidateGridSize()
         {
             if (_gridWidth <= 0 || _gridHeight <= 0)
@@ -119,6 +139,7 @@ namespace Code.Scrips.DrawAndCover
             return true;
         }
 
+        // Initializes the grid and applies the selected brush shape for marking coverage.
         private void GridSetup()
         {
             _grid = new CoverageGrid(_gridWidth, _gridHeight)
@@ -127,6 +148,7 @@ namespace Code.Scrips.DrawAndCover
             };
         }
 
+        // Creates a blank mask texture used to track and display the player's coverage.
         private void CreateMaskTexture()
         {
             _maskTexture = new Texture2D(_gridWidth, _gridHeight, TextureFormat.RGBA32, false)
@@ -146,6 +168,7 @@ namespace Code.Scrips.DrawAndCover
             _maskTexture.Apply();
         }
 
+        // Assigns the base, reveal, and mask textures to the shader material for rendering.
         private void ApplyMaterialTextures()
         {
             coverageMaterial.SetTexture(_baseTex, baseTexture);
@@ -153,6 +176,7 @@ namespace Code.Scrips.DrawAndCover
             coverageMaterial.SetTexture(_maskTex, _maskTexture);
         }
 
+        // Applies the configured material to the plane's renderer for visual feedback.
         private void AssignMaterialToPlane()
         {
             Renderer planeRenderer = plane.GetComponent<Renderer>();
@@ -165,6 +189,7 @@ namespace Code.Scrips.DrawAndCover
             planeRenderer.material = coverageMaterial;
         }
 
+        // Sets up the audio components for drawing sounds and fade control.
         private void AudioSetup()
         {
             if (_cam != null) _camAudioSource = _cam.gameObject.AddComponent<AudioSource>();
@@ -174,19 +199,7 @@ namespace Code.Scrips.DrawAndCover
         }
 
 
-        private void OnEnable()
-        {
-            clickEvent.onInputReceived += HandleClick;
-            clickEvent.onInputStop += StopClick;
-        }
-
-        private void OnDisable()
-        {
-            clickEvent.onInputReceived -= HandleClick;
-            clickEvent.onInputStop -= StopClick;
-        }
-
-
+        // Updates the visual representation of the coverage mask based on the current grid state.
         private void UpdateMaskTexture()
         {
             for (int i = 0; i < _gridWidth; i++)
@@ -202,22 +215,23 @@ namespace Code.Scrips.DrawAndCover
             _maskTexture.Apply();
         }
 
+        // Converts a mouse click to a grid position and marks the corresponding area as covered.
         private void HandleClick(Vector3 position)
         {
             Ray ray = _cam.ScreenPointToRay(position);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if (!_camAudioSource.isPlaying) _camAudioSource.Play();
                 MarkAtWorldPosition(hit.point);
             }
         }
 
+        // Fades out the drawing sound when the player stops clicking.
         private void StopClick()
         {
             _audioFader.StartFadeOut();
         }
 
-        // Convert world position to grid coordinate based on plane local space & mesh bounds
+        // Converts a world-space position into a corresponding grid cell coordinate.
         private Vector2Int WorldToGrid(Vector3 worldPosition)
         {
             Vector3 localPos = plane.transform.InverseTransformPoint(worldPosition);
@@ -228,6 +242,7 @@ namespace Code.Scrips.DrawAndCover
             return new Vector2Int(x, y);
         }
 
+        // Marks the coverage grid at the position where the player clicked, using the brush size.
         private void MarkAtWorldPosition(Vector3 worldPos)
         {
             if (_grid == null)
@@ -239,20 +254,24 @@ namespace Code.Scrips.DrawAndCover
             Vector2Int gridPos = WorldToGrid(worldPos);
             if (IsInBounds(gridPos.x, gridPos.y))
             {
-                _grid.MarkCoverage(gridPos.x, gridPos.y, brushRadius);
+                if (!_camAudioSource.isPlaying) _camAudioSource.Play();
+                _grid.MarkCoverage(gridPos.x, gridPos.y, brushSize);
             }
         }
 
+        // Checks whether a given grid coordinate is within the bounds of the grid.
         private bool IsInBounds(int x, int y)
         {
             return x >= 0 && x < _gridWidth && y >= 0 && y < _gridHeight;
         }
 
+        // Returns the percentage of the grid that has been covered so far.
         private float GetCoveragePercentage()
         {
             return _grid.GetCoveragePercent();
         }
 
+        // Called when the required coverage is reached; plays finishing sound and prevents further drawing.
         public override void Success()
         {
             _finished = true;
@@ -261,6 +280,7 @@ namespace Code.Scrips.DrawAndCover
             _finishingSource.Play();
         }
 
+        // Cleans up audio resources to prevent memory leaks when the object is destroyed.
         private void OnDestroy()
         {
             Destroy(_camAudioSource);

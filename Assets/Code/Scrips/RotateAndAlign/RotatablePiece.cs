@@ -40,6 +40,8 @@ namespace Code.Scrips.RotateAndAlign
 
         private void Start()
         {
+            //due to a reoccurring bug that only happens in special cases the on scroll event gets added in the start instead of OnEnable
+            _scrollEvent.onScroll += Scroll;
             OutlineSetup();
             AudioSetup();
         }
@@ -77,7 +79,7 @@ namespace Code.Scrips.RotateAndAlign
 
         private void OnEnable()
         {
-            _scrollEvent.onScroll += Scroll;
+            //_scrollEvent.onScroll += Scroll;
         }
 
         private void OnDisable()

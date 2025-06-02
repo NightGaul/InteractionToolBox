@@ -10,7 +10,6 @@ namespace Code.ScriptableObjectScripts
         
         public void Raise(RaycastHit obj, bool isInteractable)
         {
-            
             onInteract?.Invoke(obj, isInteractable);
         }
     }

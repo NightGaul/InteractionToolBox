@@ -11,7 +11,9 @@ namespace Code.Scrips.ButtonMashing
     {
         [Header("Mashing Settings")] public MashingType mashingType;
         [ShowIfEnum("mashingType", MashingType.TIMED)]
+        [Tooltip("Window of time for mashing")]
         public float mashingDuration;
+        [Tooltip("Amount of keystrokes needed to trigger success")]
         public int requiredMashingAmount;
         [Header("Visuals")] public VisualEffect mashVisualEffect;
         [ShowIfEnum("mashVisualEffect", VisualEffect.SCREEN_SHAKE, VisualEffect.ZOOM)]
@@ -30,9 +32,7 @@ namespace Code.Scrips.ButtonMashing
         private AudioSource _audioSourceFinish;
         
         private bool _alreadyWon;
-
         
-
         private void Start()
         {
             MashingTypeSetup();
@@ -46,6 +46,7 @@ namespace Code.Scrips.ButtonMashing
             
         }
 
+        // Handles the core mashing logic; checks if success criteria are met and updates visual effects based on progress.
         private void MashingExecution()
         {
             var mashingAlreadyDone = _currentMashingType.HandleMashing();
@@ -60,6 +61,7 @@ namespace Code.Scrips.ButtonMashing
             _currentEffectType.ApplyMashingEffect(strength);
         }
 
+        // Configures the appropriate visual effect (e.g., screen shake or zoom) and sets its intensity range.
         private void VisualEffectsSetup()
         {
             switch (mashVisualEffect)
@@ -78,6 +80,7 @@ namespace Code.Scrips.ButtonMashing
             _currentEffectType.SetMashingIntensity(startIntensity, endIntensity);
         }
 
+        // Sets up audio components, assigning sounds to the mashing type and final success clip.
         private void AudioSetup()
         {
             _audioSourceFinish = this.AddComponent<AudioSource>();
@@ -85,6 +88,7 @@ namespace Code.Scrips.ButtonMashing
             _currentMashingType.SetMashingSound(mashSound);
         }
 
+        // Instantiates the correct mashing behavior (e.g., timed, single, or alternate) and configures it as needed.
         private void MashingTypeSetup()
         {
             switch (mashingType)
@@ -108,7 +112,7 @@ namespace Code.Scrips.ButtonMashing
             }
         }
 
-
+        // Cleans up and destroys all runtime components to avoid memory leaks or dangling references.
         private void OnDestroy()
         {
             if (_currentEffectType) Destroy(_currentEffectType.gameObject);
@@ -116,6 +120,7 @@ namespace Code.Scrips.ButtonMashing
             Destroy(_audioSourceFinish);
         }
 
+        // Called upon successful mashing; plays the finish sound and prevents further input.
         public override void Success()
         {
             _audioSourceFinish.Play();
