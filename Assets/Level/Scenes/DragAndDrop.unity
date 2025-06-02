@@ -553,10 +553,9 @@ GameObject:
   - component: {fileID: 854335515}
   - component: {fileID: 854335518}
   - component: {fileID: 854335517}
-  - component: {fileID: 854335516}
   m_Layer: 0
   m_Name: SnapPoint (4)
-  m_TagString: SnapPoint
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -576,27 +575,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1842536944}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &854335516
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 854335514}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &854335517
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -692,10 +670,9 @@ GameObject:
   - component: {fileID: 1204752304}
   - component: {fileID: 1204752307}
   - component: {fileID: 1204752306}
-  - component: {fileID: 1204752305}
   m_Layer: 0
   m_Name: SnapPoint (2)
-  m_TagString: SnapPoint
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -715,27 +692,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1842536944}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1204752305
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1204752303}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1204752306
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1025,10 +981,9 @@ GameObject:
   - component: {fileID: 2049397255}
   - component: {fileID: 2049397258}
   - component: {fileID: 2049397257}
-  - component: {fileID: 2049397256}
   m_Layer: 0
   m_Name: SnapPoint
-  m_TagString: SnapPoint
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1048,27 +1003,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1842536944}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &2049397256
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049397254}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &2049397257
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1133,10 +1067,9 @@ GameObject:
   - component: {fileID: 2057109684}
   - component: {fileID: 2057109687}
   - component: {fileID: 2057109686}
-  - component: {fileID: 2057109685}
   m_Layer: 0
   m_Name: SnapPoint (1)
-  m_TagString: SnapPoint
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1156,27 +1089,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1842536944}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &2057109685
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2057109683}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &2057109686
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1241,10 +1153,9 @@ GameObject:
   - component: {fileID: 2136933140}
   - component: {fileID: 2136933143}
   - component: {fileID: 2136933142}
-  - component: {fileID: 2136933141}
   m_Layer: 0
   m_Name: SnapPoint (3)
-  m_TagString: SnapPoint
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1264,27 +1175,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1842536944}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &2136933141
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2136933139}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &2136933142
 MeshRenderer:
   m_ObjectHideFlags: 0

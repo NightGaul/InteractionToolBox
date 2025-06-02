@@ -50,6 +50,7 @@ namespace Code.Scrips.RotateAndAlign
         {
             foreach (var piece in pieces)
             {
+                piece.tag = "Scrollable";
                 piece.SetScrollEvent(scrollEvent);
                 piece.SetRotationSpeed((int)rotationAngleDivisorOf360);
                 piece.SetOutline(outlineMode, outlineColor, outlineWidth);

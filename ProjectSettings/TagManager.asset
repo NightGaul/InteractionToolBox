@@ -5,9 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Draggable
-  - SnapPoint
   - Interactable
-  - Destination
   - Scrollable
   layers:
   - Default
