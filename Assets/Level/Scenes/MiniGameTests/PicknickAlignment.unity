@@ -435,6 +435,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e4066e6a65423c44aa40ad5d3d8be35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scrollEvent: {fileID: 11400000, guid: e0e366e1d53d5e4418aea49615308ca4, type: 2}
+  rotationAngleDivisorOf360: 90
+  rotationAxis: 0
+  useAutoScramble: 1
   pieces:
   - {fileID: 1570529629}
   - {fileID: 953336410}
@@ -445,14 +449,10 @@ MonoBehaviour:
   - {fileID: 450775576}
   - {fileID: 859845961}
   - {fileID: 201749666}
-  rotationAngleDivisorOf360: 90
-  rotationAxis: 0
-  useAutoScramble: 1
-  scrollEvent: {fileID: 11400000, guid: e0e366e1d53d5e4418aea49615308ca4, type: 2}
   outlineMode: 1
   outlineColor: {r: 0.9811321, g: 0.6776557, b: 0.50445, a: 0.7607843}
   outlineWidth: 4.1
-  clickSound: {fileID: 8300000, guid: bac222c2515819f4bbce2a704abe7541, type: 3}
+  rotationSound: {fileID: 8300000, guid: bac222c2515819f4bbce2a704abe7541, type: 3}
   rightRotateSound: {fileID: 8300000, guid: dedbddfea5fa46a4a8351aade6c254a0, type: 3}
 --- !u!1001 &364183302
 PrefabInstance:

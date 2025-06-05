@@ -760,7 +760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactEvent: {fileID: 11400000, guid: 0310d9b1aa12fa84bb74c51b888ed6d5, type: 2}
-  handTransform: {fileID: 717868523}
+  playerTransform: {fileID: 717868523}
   outlineMode: 1
   outlineColor: {r: 1, g: 0.0047169924, b: 0.0047169924, a: 1}
   outlineWidth: 3
